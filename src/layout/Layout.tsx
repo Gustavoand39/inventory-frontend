@@ -1,0 +1,26 @@
+import React from "react";
+import { Outlet } from "react-router";
+import { Spinner } from "@nextui-org/react";
+
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+
+const Layout: React.FC = () => {
+  return (
+    <div className="flex h-screen">
+      <Sidebar />
+
+      <div className="flex flex-col flex-1">
+        <Header />
+
+        <main className="bg-slate-100 dark:bg-neutral-800 flex-1 overflow-y-auto p-6">
+          <React.Suspense fallback={<Spinner />}>
+            <Outlet />
+          </React.Suspense>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default Layout;
