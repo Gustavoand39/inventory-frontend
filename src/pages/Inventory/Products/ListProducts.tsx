@@ -5,8 +5,8 @@ import { toast } from "sonner";
 
 import ProductForm from "../../../components/Inventory/Modal/ProductForm";
 import ProductHeader from "../../../components/Inventory/Table/ProductTableHeader";
+import ProductTable from "../../../components/Inventory/Table/ProductTable";
 import CustomModal from "../../../components/ui/Modal/CustomModal";
-import CustomTable from "../../../components/ui/Tables/CustomTable";
 
 import {
   initialProductColumns,
@@ -23,11 +23,11 @@ import useForm from "../../../hooks/useForm";
 import { IProduct } from "../../../interfaces/Product";
 import { IColumn } from "../../../interfaces/Table";
 import handleAxiosError from "../../../helpers/handleAxiosError";
-import { getImage } from "../../../services/uploadFiles";
 
 const ProductList = () => {
   const [image, setImage] = useState<File | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedElement, setSelectedElement] = useState<string>("producto");
   const [products, setProducts] = useState<IProduct[]>([]);
   const [columns, setColumns] = useState<IColumn[]>(initialProductColumns);
 
@@ -63,6 +63,7 @@ const ProductList = () => {
 
   //* CREAR PRODUCTO
   const openCreateProductModal = () => {
+    reset(initialProductState);
     setIsCreateOpen(true);
     setImage(null);
   };
@@ -85,11 +86,10 @@ const ProductList = () => {
 
   //* EDITAR PRODUCTO
   const openEditProductModal = async (id: number) => {
+    reset(initialProductState);
     try {
       const resp = await getProduct(id);
       if (!resp.error && resp.product) {
-        const image = await getImage(resp.product.image);
-        console.log(":0 -> ", image);
         setFormValue(resp.product);
         setIsEditOpen(true);
       }
@@ -113,9 +113,12 @@ const ProductList = () => {
   };
 
   //* ELIMINAR PRODUCTO
-  const openDeleteProductModal = (id: number) => {
-    setSelectedId(id);
-    setIsDeleteOpen(true);
+  const openDeleteProductModal = (product: IProduct) => {
+    if (product.id) {
+      setSelectedId(product.id);
+      setSelectedElement(product.name);
+      setIsDeleteOpen(true);
+    }
   };
 
   const handleDeleteProduct = async (id: number) => {
@@ -126,6 +129,7 @@ const ProductList = () => {
       if (!error) {
         setProducts(products.filter((product) => product.id !== id));
         setSelectedId(null);
+        setSelectedElement("producto");
         toast.success("Producto eliminado correctamente");
       }
     } catch (error) {
@@ -154,7 +158,7 @@ const ProductList = () => {
         color="danger"
         variant="flat"
         onPress={() => {
-          if (product.id) openDeleteProductModal(product.id);
+          if (product.id) openDeleteProductModal(product);
         }}
       >
         <TrashIcon height={18} />
@@ -162,9 +166,18 @@ const ProductList = () => {
     </div>
   );
 
+  const productFormComponent = (
+    <ProductForm
+      values={values}
+      handleInputChange={handleInputChange}
+      image={image}
+      setImage={setImage}
+    />
+  );
+
   return (
     <section>
-      <CustomTable
+      <ProductTable
         aria="Lista de productos"
         data={products}
         columns={columns}
@@ -184,14 +197,7 @@ const ProductList = () => {
         isOpen={isCreateOpen}
         onClose={() => setIsCreateOpen(false)}
         onSave={handleCreateProduct}
-        renderBody={
-          <ProductForm
-            values={values}
-            handleInputChange={handleInputChange}
-            image={image}
-            setImage={setImage}
-          />
-        }
+        renderBody={productFormComponent}
       />
 
       <CustomModal
@@ -199,28 +205,17 @@ const ProductList = () => {
         isOpen={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         onSave={handleEditProduct}
-        renderBody={
-          <ProductForm
-            values={values}
-            handleInputChange={handleInputChange}
-            image={image}
-            setImage={setImage}
-          />
-        }
+        renderBody={productFormComponent}
       />
 
       <CustomModal
-        title="Eliminar Producto"
+        title={`Eliminar ${selectedElement}`}
         isOpen={isDeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         onSave={() => {
           if (selectedId) handleDeleteProduct(selectedId);
         }}
-        renderBody={
-          <div>
-            <p>¿Estás seguro de eliminar este producto?</p>
-          </div>
-        }
+        renderBody={<p>¿Estás seguro de eliminar este producto?</p>}
       />
     </section>
   );

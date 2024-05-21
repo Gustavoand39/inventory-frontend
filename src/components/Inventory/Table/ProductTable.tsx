@@ -18,7 +18,7 @@ interface ICustomTable<T> {
   renderActions?: (item: T) => JSX.Element;
 }
 
-const CustomTable = <T extends IProduct>({
+const ProductTable = <T extends IProduct>({
   aria,
   data,
   columns,
@@ -62,4 +62,4 @@ const CustomTable = <T extends IProduct>({
   );
 };
 
-export default CustomTable;
+export default ProductTable;

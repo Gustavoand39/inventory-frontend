@@ -9,9 +9,3 @@ export const uploadImage = async (formData: FormData) => {
   return data;
 };
 
-export const getImage = async (fileName: string) => {
-  const resp = await api.get(`upload/image/${fileName}`, {
-    responseType: "blob", // Esto asegura que la respuesta sea tratada como un archivo binario
-  });
-  return resp;
-};

@@ -6,6 +6,8 @@ import { getCategories } from "../../../services/categories";
 
 type FormValues = { [key: string]: unknown };
 
+const VITE_APP_APIEND = import.meta.env.VITE_APP_APIEND;
+
 interface IProductForm {
   values: FormValues;
   handleInputChange: (
@@ -22,15 +24,35 @@ const ProductForm = ({
   setImage,
 }: IProductForm) => {
   const [categories, setCategories] = useState<FormValues[]>([]);
+  const [src, setSrc] = useState<string | File>("");
 
   useEffect(() => {
-    getCat();
+    getCateg();
   }, []);
 
-  const getCat = async () => {
+  useEffect(() => {
+    renderImage();
+  }, [image, values.image]);
+
+  const getCateg = async (): Promise<void> => {
     const resp = await getCategories();
-    if (resp.error) return toast.error(resp.message);
+    if (resp.error) {
+      toast.error(resp.message);
+      return;
+    }
     setCategories(resp.data);
+  };
+
+  const renderImage = (): void => {
+    if (image) {
+      setSrc(URL.createObjectURL(image));
+      return;
+    }
+
+    if (values.image) {
+      setSrc(`${VITE_APP_APIEND}/${values.image}`);
+      return;
+    }
   };
 
   return (
@@ -108,10 +130,10 @@ const ProductForm = ({
         />
 
         <Image
-          height={20}
-          className={image ? "flex" : "hidden"}
+          height={14}
+          className={src ? "flex" : "hidden"}
           alt="Imagen del producto"
-          src={image ? URL.createObjectURL(image) : ""}
+          src={src as string}
         />
       </div>
     </>
