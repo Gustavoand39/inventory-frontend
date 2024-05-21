@@ -11,10 +11,6 @@ export const login = async (
 };
 
 export const refreshToken = async (token: string): Promise<IAuthResponse> => {
-  try {
-    const { data } = await api.post("auth/refresh", { token });
-    return data as IAuthResponse;
-  } catch (error: unknown) {
-    throw new Error(error as string);
-  }
+  const { data } = await api.post("auth/refresh", { token });
+  return data as IAuthResponse;
 };
