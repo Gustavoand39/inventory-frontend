@@ -105,7 +105,7 @@ const ProductForm = ({
       <Select
         name="category"
         items={categories}
-        value={values.category as number}
+        value={values.category as string}
         onChange={handleInputChange}
         label="Categoría"
         placeholder="Seleccione una categoría"
