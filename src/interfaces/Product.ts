@@ -11,5 +11,6 @@ export interface IProduct {
 }
 
 export interface IProductResponse extends IApiResponse {
+  product?: IProduct;
   products?: IProduct[];
 }

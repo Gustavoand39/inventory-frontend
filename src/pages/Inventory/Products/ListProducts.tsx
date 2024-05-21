@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@nextui-org/react";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { toast } from "sonner";
 
 import ProductForm from "../../../components/Inventory/Modal/ProductForm";
 import ProductHeader from "../../../components/Inventory/Table/ProductTableHeader";
@@ -11,27 +12,31 @@ import {
   initialProductColumns,
   initialProductState,
 } from "../../../constants/initialStateProducts";
-import { getProducts, createProduct } from "../../../services/products";
+import {
+  getProducts,
+  getProduct,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from "../../../services/products";
 import useForm from "../../../hooks/useForm";
-import useModal from "../../../hooks/useModal";
 import { IProduct } from "../../../interfaces/Product";
 import { IColumn } from "../../../interfaces/Table";
 import handleAxiosError from "../../../helpers/handleAxiosError";
-import { toast } from "sonner";
+import { getImage } from "../../../services/uploadFiles";
 
 const ProductList = () => {
   const [image, setImage] = useState<File | null>(null);
-  // const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const [products, setProducts] = useState<IProduct[]>([]);
   const [columns, setColumns] = useState<IColumn[]>(initialProductColumns);
 
-  const { values, handleInputChange, reset } = useForm(initialProductState);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-  const {
-    isOpen: isCreateModalOpen,
-    openModal: openCreateModal,
-    closeModal: closeCreateModal,
-  } = useModal();
+  const { values, handleInputChange, setFormValue, reset } =
+    useForm(initialProductState);
 
   useEffect(() => {
     getAllProducts();
@@ -45,6 +50,7 @@ const ProductList = () => {
     );
   };
 
+  //* OBTENER TODOS LOS PRODUCTOS
   const getAllProducts = async () => {
     try {
       const { products } = await getProducts();
@@ -55,20 +61,73 @@ const ProductList = () => {
     }
   };
 
-  // * CREAR PRODUCTO
+  //* CREAR PRODUCTO
   const openCreateProductModal = () => {
-    openCreateModal();
+    setIsCreateOpen(true);
     setImage(null);
   };
 
   const handleCreateProduct = async () => {
     try {
-      closeCreateModal();
-      await createProduct(values, image);
-      console.log("values: ", values);
+      setIsCreateOpen(false);
+      const resp = await createProduct(values, image);
+      if (!resp.error) {
+        toast.success(resp.message);
+        const { products } = await getProducts();
+        if (products) setProducts(products);
+        reset(initialProductState);
+      }
+    } catch (error) {
+      const resp = handleAxiosError(error);
+      toast.error(resp.message);
+    }
+  };
+
+  //* EDITAR PRODUCTO
+  const openEditProductModal = async (id: number) => {
+    try {
+      const resp = await getProduct(id);
+      if (!resp.error && resp.product) {
+        const image = await getImage(resp.product.image);
+        console.log(":0 -> ", image);
+        setFormValue(resp.product);
+        setIsEditOpen(true);
+      }
+    } catch (error) {
+      const resp = handleAxiosError(error);
+      toast.error(resp.message);
+    }
+  };
+
+  const handleEditProduct = async () => {
+    try {
+      setIsEditOpen(false);
+      await updateProduct(values, image);
       const { products } = await getProducts();
       if (products) setProducts(products);
       reset(initialProductState);
+    } catch (error) {
+      const resp = handleAxiosError(error);
+      toast.error(resp.message);
+    }
+  };
+
+  //* ELIMINAR PRODUCTO
+  const openDeleteProductModal = (id: number) => {
+    setSelectedId(id);
+    setIsDeleteOpen(true);
+  };
+
+  const handleDeleteProduct = async (id: number) => {
+    try {
+      setIsDeleteOpen(false);
+      await deleteProduct(id);
+      const { error } = await getProducts();
+      if (!error) {
+        setProducts(products.filter((product) => product.id !== id));
+        setSelectedId(null);
+        toast.success("Producto eliminado correctamente");
+      }
     } catch (error) {
       const resp = handleAxiosError(error);
       toast.error(resp.message);
@@ -82,8 +141,9 @@ const ProductList = () => {
         size="sm"
         color="primary"
         variant="flat"
-        // onPress={() => openEditProductModal(product.id)}
-        onPress={() => console.log("Editar: ", product.id)}
+        onPress={() => {
+          if (product.id) openEditProductModal(product.id);
+        }}
       >
         <PencilIcon height={18} />
       </Button>
@@ -93,8 +153,9 @@ const ProductList = () => {
         size="sm"
         color="danger"
         variant="flat"
-        // onPress={() => openDeleteProductModal(product.id)}
-        onPress={() => console.log("Borrar: ", product.id)}
+        onPress={() => {
+          if (product.id) openDeleteProductModal(product.id);
+        }}
       >
         <TrashIcon height={18} />
       </Button>
@@ -120,8 +181,8 @@ const ProductList = () => {
 
       <CustomModal
         title="Crear Producto"
-        isOpen={isCreateModalOpen}
-        onClose={closeCreateModal}
+        isOpen={isCreateOpen}
+        onClose={() => setIsCreateOpen(false)}
         onSave={handleCreateProduct}
         renderBody={
           <ProductForm
@@ -130,6 +191,35 @@ const ProductList = () => {
             image={image}
             setImage={setImage}
           />
+        }
+      />
+
+      <CustomModal
+        title="Editar Producto"
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        onSave={handleEditProduct}
+        renderBody={
+          <ProductForm
+            values={values}
+            handleInputChange={handleInputChange}
+            image={image}
+            setImage={setImage}
+          />
+        }
+      />
+
+      <CustomModal
+        title="Eliminar Producto"
+        isOpen={isDeleteOpen}
+        onClose={() => setIsDeleteOpen(false)}
+        onSave={() => {
+          if (selectedId) handleDeleteProduct(selectedId);
+        }}
+        renderBody={
+          <div>
+            <p>¿Estás seguro de eliminar este producto?</p>
+          </div>
         }
       />
     </section>
