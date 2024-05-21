@@ -6,13 +6,13 @@ const handleAxiosError = (error: unknown) => {
 
     return {
       error: true,
-      message: data?.message || "Error desconocido",
+      message: data?.message || `Error desconocido: ${error.response.status}`,
     };
   }
 
   return {
     error: true,
-    message: "Un error inesperado ha ocurrido",
+    message: "Un error inesperado ha ocurrido. Intenta de nuevo.",
   };
 };
 

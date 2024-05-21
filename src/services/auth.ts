@@ -1,3 +1,4 @@
+// src/services/authService.js
 import api from "../api/axiosConfig";
 import { IAuthResponse } from "../interfaces/Api";
 
@@ -10,6 +11,10 @@ export const login = async (
 };
 
 export const refreshToken = async (token: string): Promise<IAuthResponse> => {
-  const { data } = await api.post("auth/refresh", { token });
-  return data as IAuthResponse;
+  try {
+    const { data } = await api.post("auth/refresh", { token });
+    return data as IAuthResponse;
+  } catch (error: unknown) {
+    throw new Error(error as string);
+  }
 };
