@@ -1,12 +1,12 @@
 import { Pagination } from "@nextui-org/react";
 
-interface IProductPagination {
+interface CustomTableFooter {
   page: number;
   total: number;
   callback: (page: number) => void;
 }
 
-const ProductPagination: React.FC<IProductPagination> = ({
+const CustomTableFooter: React.FC<CustomTableFooter> = ({
   page,
   total,
   callback,
@@ -26,4 +26,4 @@ const ProductPagination: React.FC<IProductPagination> = ({
   );
 };
 
-export default ProductPagination;
+export default CustomTableFooter;

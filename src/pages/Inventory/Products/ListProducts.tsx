@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import ProductForm from "../../../components/Inventory/Modal/ProductForm";
 import ProductHeader from "../../../components/ui/Table/CustomTableHeader";
 import ProductTable from "../../../components/ui/Table/CustomTable";
-import ProductPagination from "../../../components/Inventory/Table/ProductPagination";
+import ProductFooter from "../../../components/ui/Table/ProductPagination";
 import CustomModal from "../../../components/ui/Modal/CustomModal";
 
 import {
@@ -189,7 +189,6 @@ const ProductList = () => {
   // TODO: Implementar el componente de búsqueda
   // TODO: Implementar la paginación
   // TODO: Mover la lógica de paginación a un hook (si es posible)
-  // TODO: Mover el renderActions a un componente separado
 
   return (
     <section>
@@ -208,7 +207,7 @@ const ProductList = () => {
           />
         }
         bottomContent={
-          <ProductPagination page={page} total={5} callback={setPage} />
+          <ProductFooter page={page} total={5} callback={setPage} />
         }
         renderActions={renderActions}
       />
