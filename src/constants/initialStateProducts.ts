@@ -1,6 +1,7 @@
+import { IProduct } from "../interfaces/Product";
 import { IColumn } from "../interfaces/Table";
 
-export const initialProductColumns: IColumn[] = [
+export const initialProductColumns: IColumn<IProduct>[] = [
   { key: "id", label: "Identificador", visible: false },
   { key: "name", label: "Nombre", visible: true },
   { key: "description", label: "Descripción", visible: false },

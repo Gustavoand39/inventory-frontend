@@ -12,7 +12,13 @@ import {
   ChevronDownIcon,
   PlusIcon,
 } from "@heroicons/react/24/solid";
-import { ITableHeader } from "../../../interfaces/Table";
+
+interface ITableHeader {
+  columns: { key: string; label: string; visible: boolean }[];
+  length: number;
+  toggleColumnVisibility: (key: string, visible: boolean) => void;
+  openCreateModal?: () => void;
+}
 
 interface IProductTableHeader extends ITableHeader {
   openCreateModal: () => void;
@@ -20,7 +26,7 @@ interface IProductTableHeader extends ITableHeader {
   setPage: (page: number) => void;
 }
 
-const ProductTableHeader = ({
+const CustomTableHeader = ({
   columns,
   length,
   toggleColumnVisibility,
@@ -124,4 +130,4 @@ const ProductTableHeader = ({
   );
 };
 
-export default ProductTableHeader;
+export default CustomTableHeader;

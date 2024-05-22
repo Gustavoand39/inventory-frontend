@@ -4,8 +4,8 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { toast } from "sonner";
 
 import ProductForm from "../../../components/Inventory/Modal/ProductForm";
-import ProductHeader from "../../../components/Inventory/Table/ProductTableHeader";
-import ProductTable from "../../../components/Inventory/Table/ProductTable";
+import ProductHeader from "../../../components/ui/Table/CustomTableHeader";
+import ProductTable from "../../../components/ui/Table/CustomTable";
 import ProductPagination from "../../../components/Inventory/Table/ProductPagination";
 import CustomModal from "../../../components/ui/Modal/CustomModal";
 
@@ -28,9 +28,11 @@ import handleAxiosError from "../../../helpers/handleAxiosError";
 const ProductList = () => {
   const [image, setImage] = useState<File | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [selectedElement, setSelectedElement] = useState<string>("producto");
+  const [selectedElement, setSelectedElement] = useState<string>("");
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [columns, setColumns] = useState<IColumn[]>(initialProductColumns);
+  const [columns, setColumns] = useState<IColumn<IProduct>[]>(
+    initialProductColumns
+  );
 
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -82,8 +84,7 @@ const ProductList = () => {
       const resp = await createProduct(values, image);
       if (!resp.error) {
         toast.success(resp.message);
-        const { products } = await getProducts(page, rowsPerPage);
-        if (products) setProducts(products);
+        getAllProducts();
         reset(initialProductState);
       }
     } catch (error) {
@@ -111,10 +112,11 @@ const ProductList = () => {
     try {
       setIsEditOpen(false);
       const resp = await updateProduct(values, image);
-      toast.success(resp.message);
-      const { products } = await getProducts(page, rowsPerPage);
-      if (products) setProducts(products);
-      reset(initialProductState);
+      if (!resp.error) {
+        toast.success(resp.message);
+        const { products } = await getProducts(page, rowsPerPage);
+        if (products) setProducts(products);
+      }
     } catch (error) {
       const resp = handleAxiosError(error);
       toast.error(resp.message);
@@ -136,9 +138,9 @@ const ProductList = () => {
       await deleteProduct(id);
       const { error } = await getProducts(page, rowsPerPage);
       if (!error) {
-        setProducts(products.filter((product) => product.id !== id));
+        getAllProducts();
         setSelectedId(null);
-        setSelectedElement("producto");
+        setSelectedElement("");
         toast.success("Producto eliminado correctamente");
       }
     } catch (error) {
@@ -184,6 +186,11 @@ const ProductList = () => {
     />
   );
 
+  // TODO: Implementar el componente de búsqueda
+  // TODO: Implementar la paginación
+  // TODO: Mover la lógica de paginación a un hook (si es posible)
+  // TODO: Mover el renderActions a un componente separado
+
   return (
     <section>
       <ProductTable
@@ -200,9 +207,9 @@ const ProductList = () => {
             setPage={setPage}
           />
         }
-        Pagination={() => (
+        bottomContent={
           <ProductPagination page={page} total={5} callback={setPage} />
-        )}
+        }
         renderActions={renderActions}
       />
 
@@ -223,7 +230,7 @@ const ProductList = () => {
       />
 
       <CustomModal
-        title={`Eliminar ${selectedElement}`}
+        title={`Eliminar ${selectedElement ? selectedElement : "producto"}`}
         isOpen={isDeleteOpen}
         onClose={() => setIsDeleteOpen(false)}
         onSave={() => {
