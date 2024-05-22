@@ -3,8 +3,8 @@ import { IProduct, IProductResponse } from "../interfaces/Product";
 import { getCategory } from "./categories";
 import { uploadImage } from "./uploadFiles";
 
-export const getProducts = async () => {
-  const { data } = await api.get("products/");
+export const getProducts = async (page: number, limit: number) => {
+  const { data } = await api.get(`products/?page=${page}&limit=${limit}`);
   return data as IProductResponse;
 };
 

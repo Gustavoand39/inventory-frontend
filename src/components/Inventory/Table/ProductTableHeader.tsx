@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Dropdown,
@@ -16,6 +16,8 @@ import { ITableHeader } from "../../../interfaces/Table";
 
 interface IProductTableHeader extends ITableHeader {
   openCreateModal: () => void;
+  setRowsPerPage: (rowsPerPage: number) => void;
+  setPage: (page: number) => void;
 }
 
 const ProductTableHeader = ({
@@ -23,6 +25,8 @@ const ProductTableHeader = ({
   length,
   toggleColumnVisibility,
   openCreateModal,
+  setRowsPerPage,
+  setPage,
 }: IProductTableHeader) => {
   const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
 
@@ -41,6 +45,14 @@ const ProductTableHeader = ({
     setVisibleColumns(updatedVisibleColumns);
     toggleColumnVisibility(key, !visibleColumns.includes(key));
   };
+
+  const onRowsPerPageChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setRowsPerPage(Number(e.target.value));
+      setPage(1);
+    },
+    []
+  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -98,7 +110,10 @@ const ProductTableHeader = ({
         </span>
         <label className="flex items-center text-default-400 text-small">
           Filas por página:
-          <select className="bg-transparent outline-none text-default-400 text-small">
+          <select
+            className="bg-transparent outline-none text-default-400 text-small"
+            onChange={onRowsPerPageChange}
+          >
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="15">15</option>

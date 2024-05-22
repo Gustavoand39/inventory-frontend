@@ -35,12 +35,15 @@ const ProductList = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
+  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+  const [page, setPage] = useState<number>(1);
+
   const { values, handleInputChange, setFormValue, reset } =
     useForm(initialProductState);
 
   useEffect(() => {
     getAllProducts();
-  }, []);
+  }, [rowsPerPage]);
 
   const toggleColumnVisibility = (key: string, visible: boolean) => {
     setColumns((prevColumns) =>
@@ -53,7 +56,7 @@ const ProductList = () => {
   //* OBTENER TODOS LOS PRODUCTOS
   const getAllProducts = async () => {
     try {
-      const { products } = await getProducts();
+      const { products } = await getProducts(page, rowsPerPage);
       if (products) setProducts(products);
     } catch (error) {
       const resp = handleAxiosError(error);
@@ -74,7 +77,7 @@ const ProductList = () => {
       const resp = await createProduct(values, image);
       if (!resp.error) {
         toast.success(resp.message);
-        const { products } = await getProducts();
+        const { products } = await getProducts(page, rowsPerPage);
         if (products) setProducts(products);
         reset(initialProductState);
       }
@@ -102,8 +105,9 @@ const ProductList = () => {
   const handleEditProduct = async () => {
     try {
       setIsEditOpen(false);
-      await updateProduct(values, image);
-      const { products } = await getProducts();
+      const resp = await updateProduct(values, image);
+      toast.success(resp.message);
+      const { products } = await getProducts(page, rowsPerPage);
       if (products) setProducts(products);
       reset(initialProductState);
     } catch (error) {
@@ -125,7 +129,7 @@ const ProductList = () => {
     try {
       setIsDeleteOpen(false);
       await deleteProduct(id);
-      const { error } = await getProducts();
+      const { error } = await getProducts(page, rowsPerPage);
       if (!error) {
         setProducts(products.filter((product) => product.id !== id));
         setSelectedId(null);
@@ -187,6 +191,8 @@ const ProductList = () => {
             length={products.length}
             toggleColumnVisibility={toggleColumnVisibility}
             openCreateModal={openCreateProductModal}
+            setRowsPerPage={setRowsPerPage}
+            setPage={setPage}
           />
         }
         renderActions={renderActions}
