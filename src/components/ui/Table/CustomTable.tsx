@@ -26,6 +26,19 @@ const CustomTable = <T,>({
   bottomContent,
   renderActions,
 }: ICustomTable<T>) => {
+  // Renderiza el contenido de la celda
+  const renderCell = (item: T, columnKey: keyof T): ReactNode => {
+    const value = item[columnKey];
+    if (
+      typeof value === "string" ||
+      typeof value === "number" ||
+      typeof value === "boolean"
+    ) {
+      return value.toString();
+    }
+    return value as ReactNode;
+  };
+
   return (
     <Table
       aria-label={aria}
@@ -57,7 +70,7 @@ const CustomTable = <T,>({
                   </TableCell>
                 ) : (
                   <TableCell key={String(column.key)}>
-                    {item[column.key as keyof T] as ReactNode}
+                    {renderCell(item, column.key as keyof T)}
                   </TableCell>
                 )
               )}
