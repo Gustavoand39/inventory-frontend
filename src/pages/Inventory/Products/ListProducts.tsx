@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import ProductForm from "../../../components/Inventory/Modal/ProductForm";
 import ProductHeader from "../../../components/Inventory/Table/ProductTableHeader";
 import ProductTable from "../../../components/Inventory/Table/ProductTable";
+import ProductPagination from "../../../components/Inventory/Table/ProductPagination";
 import CustomModal from "../../../components/ui/Modal/CustomModal";
 
 import {
@@ -37,6 +38,7 @@ const ProductList = () => {
 
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
   const { values, handleInputChange, setFormValue, reset } =
     useForm(initialProductState);
@@ -56,8 +58,11 @@ const ProductList = () => {
   //* OBTENER TODOS LOS PRODUCTOS
   const getAllProducts = async () => {
     try {
-      const { products } = await getProducts(page, rowsPerPage);
-      if (products) setProducts(products);
+      const resp = await getProducts(page, rowsPerPage);
+      if (resp.products && resp.total) {
+        setProducts(resp.products);
+        setTotalPages(resp.total);
+      }
     } catch (error) {
       const resp = handleAxiosError(error);
       toast.error(resp.message);
@@ -188,13 +193,16 @@ const ProductList = () => {
         topContent={
           <ProductHeader
             columns={columns}
-            length={products.length}
+            length={totalPages}
             toggleColumnVisibility={toggleColumnVisibility}
             openCreateModal={openCreateProductModal}
             setRowsPerPage={setRowsPerPage}
             setPage={setPage}
           />
         }
+        Pagination={() => (
+          <ProductPagination page={page} total={5} callback={setPage} />
+        )}
         renderActions={renderActions}
       />
 

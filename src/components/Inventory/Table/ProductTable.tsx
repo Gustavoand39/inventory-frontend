@@ -15,6 +15,7 @@ interface ICustomTable<T> {
   data: T[];
   columns: IColumn[];
   topContent?: JSX.Element;
+  Pagination: React.FC;
   renderActions?: (item: T) => JSX.Element;
 }
 
@@ -23,11 +24,16 @@ const ProductTable = <T extends IProduct>({
   data,
   columns,
   topContent,
+  Pagination,
   renderActions,
 }: ICustomTable<T>) => {
   return (
     <>
-      <Table aria-label={aria} topContent={topContent}>
+      <Table
+        aria-label={aria}
+        topContent={topContent}
+        bottomContent={<Pagination />}
+      >
         <TableHeader>
           {columns
             .filter((column) => column.visible)

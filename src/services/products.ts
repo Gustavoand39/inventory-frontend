@@ -3,9 +3,13 @@ import { IProduct, IProductResponse } from "../interfaces/Product";
 import { getCategory } from "./categories";
 import { uploadImage } from "./uploadFiles";
 
+interface IGetProducts extends IProductResponse {
+  total: number;
+}
+
 export const getProducts = async (page: number, limit: number) => {
   const { data } = await api.get(`products/?page=${page}&limit=${limit}`);
-  return data as IProductResponse;
+  return data as IGetProducts;
 };
 
 export const getProduct = async (id: number) => {
