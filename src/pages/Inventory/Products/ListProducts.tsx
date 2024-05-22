@@ -57,70 +57,64 @@ const ProductList = () => {
     );
   };
 
-  //* OBTENER TODOS LOS PRODUCTOS
-  const getAllProducts = async () => {
-    try {
-      const resp = await getProducts(page, rowsPerPage);
-      if (resp.products && resp.total) {
-        setProducts(resp.products);
-        setTotalPages(resp.total);
-      }
-    } catch (error) {
-      const resp = handleAxiosError(error);
-      toast.error(resp.message);
-    }
-  };
-
-  //* CREAR PRODUCTO
-  const openCreateProductModal = () => {
+  const clearStates = () => {
     reset(initialProductState);
-    setIsCreateOpen(true);
     setImage(null);
   };
 
+  //* OBTENER TODOS LOS PRODUCTOS
+  const getAllProducts = async () => {
+    await getProducts({
+      page,
+      rowsPerPage,
+      setProducts,
+      setTotalPages,
+    });
+  };
+
+  //* CREAR PRODUCTO
+  const openCreateProductModal = () => setIsCreateOpen(true);
+
   const handleCreateProduct = async () => {
-    try {
-      setIsCreateOpen(false);
-      const resp = await createProduct(values, image);
-      if (!resp.error) {
-        toast.success(resp.message);
-        getAllProducts();
-        reset(initialProductState);
-      }
-    } catch (error) {
-      const resp = handleAxiosError(error);
-      toast.error(resp.message);
+    setIsCreateOpen(false);
+    const success = await createProduct(values, image);
+    if (success) {
+      getAllProducts();
+      clearStates();
     }
+  };
+
+  const closeCreateProductModal = () => {
+    setIsCreateOpen(false);
+    clearStates();
   };
 
   //* EDITAR PRODUCTO
   const openEditProductModal = async (id: number) => {
-    reset(initialProductState);
-    try {
-      const resp = await getProduct(id);
-      if (!resp.error && resp.product) {
-        setFormValue(resp.product);
-        setIsEditOpen(true);
-      }
-    } catch (error) {
-      const resp = handleAxiosError(error);
-      toast.error(resp.message);
+    setIsEditOpen(true);
+    const resp = await getProduct(id);
+
+    if (resp.error) {
+      const error = handleAxiosError(resp.error);
+      toast.error(error.message);
+      return;
     }
+
+    if (!resp.error && resp.product) setFormValue(resp.product);
   };
 
   const handleEditProduct = async () => {
-    try {
-      setIsEditOpen(false);
-      const resp = await updateProduct(values, image);
-      if (!resp.error) {
-        toast.success(resp.message);
-        const { products } = await getProducts(page, rowsPerPage);
-        if (products) setProducts(products);
-      }
-    } catch (error) {
-      const resp = handleAxiosError(error);
-      toast.error(resp.message);
+    setIsEditOpen(false);
+    const success = await updateProduct(values, image);
+    if (success) {
+      getAllProducts();
+      clearStates();
     }
+  };
+
+  const closeEditProductModal = () => {
+    setIsEditOpen(false);
+    clearStates();
   };
 
   //* ELIMINAR PRODUCTO
@@ -133,23 +127,21 @@ const ProductList = () => {
   };
 
   const handleDeleteProduct = async (id: number) => {
-    try {
-      setIsDeleteOpen(false);
-      await deleteProduct(id);
-      const { error } = await getProducts(page, rowsPerPage);
-      if (!error) {
-        getAllProducts();
-        setSelectedId(null);
-        setSelectedElement("");
-        toast.success("Producto eliminado correctamente");
-      }
-    } catch (error) {
-      const resp = handleAxiosError(error);
-      toast.error(resp.message);
+    setIsDeleteOpen(false);
+    const success = await deleteProduct(id);
+    if (success) {
+      getAllProducts();
+      clearStates();
     }
   };
 
-  const renderActions = (product: IProduct) => (
+  const closeDeleteProductModal = () => {
+    setIsDeleteOpen(false);
+    setSelectedId(null);
+    setSelectedElement("");
+  };
+
+  const RenderActions = (product: IProduct) => (
     <div className="flex gap-2">
       <Button
         isIconOnly
@@ -209,13 +201,13 @@ const ProductList = () => {
         bottomContent={
           <ProductFooter page={page} total={5} callback={setPage} />
         }
-        renderActions={renderActions}
+        renderActions={RenderActions}
       />
 
       <CustomModal
         title="Crear Producto"
         isOpen={isCreateOpen}
-        onClose={() => setIsCreateOpen(false)}
+        onClose={closeCreateProductModal}
         onSave={handleCreateProduct}
         renderBody={productFormComponent}
       />
@@ -223,7 +215,7 @@ const ProductList = () => {
       <CustomModal
         title="Editar Producto"
         isOpen={isEditOpen}
-        onClose={() => setIsEditOpen(false)}
+        onClose={closeEditProductModal}
         onSave={handleEditProduct}
         renderBody={productFormComponent}
       />
@@ -231,7 +223,7 @@ const ProductList = () => {
       <CustomModal
         title={`Eliminar ${selectedElement ? selectedElement : "producto"}`}
         isOpen={isDeleteOpen}
-        onClose={() => setIsDeleteOpen(false)}
+        onClose={closeDeleteProductModal}
         onSave={() => {
           if (selectedId) handleDeleteProduct(selectedId);
         }}
