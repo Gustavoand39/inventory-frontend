@@ -1,15 +1,16 @@
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import React from "react";
 import { Button } from "@nextui-org/react";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { IProduct } from "../../../interfaces/Product";
 
-interface IRenderActions {
-  product: IProduct;
+interface RenderActionsProps {
+  item: IProduct;
   openEditModal: (id: number) => void;
-  openDeleteModal: (product: IProduct) => void;
+  openDeleteModal: (item: IProduct) => void;
 }
 
-const RenderActions: React.FC<IRenderActions> = ({
-  product,
+const RenderActions: React.FC<RenderActionsProps> = ({
+  item,
   openEditModal,
   openDeleteModal,
 }) => (
@@ -19,9 +20,7 @@ const RenderActions: React.FC<IRenderActions> = ({
       size="sm"
       color="primary"
       variant="flat"
-      onPress={() => {
-        if (product.id) openEditModal(product.id);
-      }}
+      onPress={() => openEditModal(item.id as number)}
     >
       <PencilIcon height={18} />
     </Button>
@@ -31,9 +30,7 @@ const RenderActions: React.FC<IRenderActions> = ({
       size="sm"
       color="danger"
       variant="flat"
-      onPress={() => {
-        if (product.id) openDeleteModal(product);
-      }}
+      onPress={() => openDeleteModal(item)}
     >
       <TrashIcon height={18} />
     </Button>

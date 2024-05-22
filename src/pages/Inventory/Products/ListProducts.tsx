@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { Button } from "@nextui-org/react";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { toast } from "sonner";
 
 import ProductForm from "../../../components/Inventory/Modal/ProductForm";
 import ProductHeader from "../../../components/ui/Table/CustomTableHeader";
 import ProductTable from "../../../components/ui/Table/CustomTable";
 import ProductFooter from "../../../components/ui/Table/ProductPagination";
+import ProductActions from "../../../components/Inventory/Table/RenderActions";
 import CustomModal from "../../../components/ui/Modal/CustomModal";
 
 import {
@@ -141,34 +140,6 @@ const ProductList = () => {
     setSelectedElement("");
   };
 
-  const RenderActions = (product: IProduct) => (
-    <div className="flex gap-2">
-      <Button
-        isIconOnly
-        size="sm"
-        color="primary"
-        variant="flat"
-        onPress={() => {
-          if (product.id) openEditProductModal(product.id);
-        }}
-      >
-        <PencilIcon height={18} />
-      </Button>
-
-      <Button
-        isIconOnly
-        size="sm"
-        color="danger"
-        variant="flat"
-        onPress={() => {
-          if (product.id) openDeleteProductModal(product);
-        }}
-      >
-        <TrashIcon height={18} />
-      </Button>
-    </div>
-  );
-
   const productFormComponent = (
     <ProductForm
       values={values}
@@ -201,7 +172,15 @@ const ProductList = () => {
         bottomContent={
           <ProductFooter page={page} total={5} callback={setPage} />
         }
-        renderActions={RenderActions}
+        renderActions={(item: IProduct) => {
+          return (
+            <ProductActions
+              item={item}
+              openEditModal={openEditProductModal}
+              openDeleteModal={openDeleteProductModal}
+            />
+          );
+        }}
       />
 
       <CustomModal
