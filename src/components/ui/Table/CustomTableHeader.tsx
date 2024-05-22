@@ -13,6 +13,8 @@ import {
   PlusIcon,
 } from "@heroicons/react/24/solid";
 
+import { rowOptions } from "../../../constants/rowOptions";
+
 interface ITableHeader {
   columns: { key: string; label: string; visible: boolean }[];
   length: number;
@@ -111,18 +113,22 @@ const CustomTableHeader = ({
       </div>
 
       <div className="flex justify-between items-center">
-        <span className="text-default-400 text-small">
+        <span className="text-default-400 text-small dark:text-slate-400">
           Total de Registros: {length}
         </span>
-        <label className="flex items-center text-default-400 text-small">
+
+        <label className="flex items-center text-default-400 text-small dark:text-slate-400">
           Filas por página:
           <select
-            className="bg-transparent outline-none text-default-400 text-small"
+            className="bg-transparent outline-none font-semibold text-small cursor-pointer px-2
+            border border-transparent rounded-md hover:border-gray-300 ml-1"
             onChange={onRowsPerPageChange}
           >
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
+            {rowOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
         </label>
       </div>

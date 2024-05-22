@@ -38,6 +38,7 @@ const ProductList = () => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+  const [totalProducts, setTotalProducts] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
 
@@ -46,7 +47,7 @@ const ProductList = () => {
 
   useEffect(() => {
     getAllProducts();
-  }, [rowsPerPage]);
+  }, [page, rowsPerPage]);
 
   const toggleColumnVisibility = (key: string, visible: boolean) => {
     setColumns((prevColumns) =>
@@ -65,8 +66,9 @@ const ProductList = () => {
   const getAllProducts = async () => {
     await getProducts({
       page,
-      rowsPerPage,
+      limit: rowsPerPage,
       setProducts,
+      setTotalProducts,
       setTotalPages,
     });
   };
@@ -150,7 +152,6 @@ const ProductList = () => {
   );
 
   // TODO: Implementar el componente de búsqueda
-  // TODO: Implementar la paginación
   // TODO: Mover la lógica de paginación a un hook (si es posible)
 
   return (
@@ -162,7 +163,7 @@ const ProductList = () => {
         topContent={
           <ProductHeader
             columns={columns}
-            length={totalPages}
+            length={totalProducts}
             toggleColumnVisibility={toggleColumnVisibility}
             openCreateModal={openCreateProductModal}
             setRowsPerPage={setRowsPerPage}
@@ -170,7 +171,7 @@ const ProductList = () => {
           />
         }
         bottomContent={
-          <ProductFooter page={page} total={5} callback={setPage} />
+          <ProductFooter page={page} total={totalPages} callback={setPage} />
         }
         renderActions={(item: IProduct) => {
           return (

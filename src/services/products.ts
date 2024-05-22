@@ -7,30 +7,34 @@ import { getCategory } from "./categories";
 import { uploadImage } from "./uploadFiles";
 
 interface IProductsResp extends IProductResponse {
-  total: number;
+  totalItems: number;
+  totalPages: number;
 }
 
 interface IGetProductsProps {
   page: number;
-  rowsPerPage: number;
+  limit: number;
   setProducts: (products: IProduct[]) => void;
+  setTotalProducts: (total: number) => void;
   setTotalPages: (total: number) => void;
 }
 
 export const getProducts = async ({
   page,
-  rowsPerPage,
+  limit,
   setProducts,
+  setTotalProducts,
   setTotalPages,
 }: IGetProductsProps): Promise<void> => {
   try {
     const { data } = await api.get<IProductsResp>(
-      `products/?page=${page}&limit=${rowsPerPage}`
+      `products/?page=${page}&limit=${limit}`
     );
 
-    if (data.products && data.total) {
+    if (data.products) {
       setProducts(data.products);
-      setTotalPages(data.total);
+      setTotalProducts(data.totalItems);
+      setTotalPages(data.totalPages);
     }
   } catch (error) {
     const resp = handleAxiosError(error);

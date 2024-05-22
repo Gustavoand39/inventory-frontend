@@ -41,6 +41,8 @@ const CustomTable = <T,>({
 
   return (
     <Table
+      color="default"
+      selectionMode="single"
       aria-label={aria}
       topContent={topContent}
       bottomContent={bottomContent}
@@ -51,25 +53,31 @@ const CustomTable = <T,>({
           .map((column) => (
             <TableColumn
               key={String(column.key)}
-              className="font-semibold text-sm"
+              className="font-semibold text-sm text-center"
             >
               {column.label}
             </TableColumn>
           ))}
       </TableHeader>
 
-      <TableBody>
+      <TableBody emptyContent={"No hay filas para mostrar."}>
         {data.map((item, index) => (
-          <TableRow key={index}>
+          <TableRow
+            key={index}
+            className="border border-transparent border-b-gray-100 dark:border-b-gray-800"
+          >
             {columns
               .filter((column) => column.visible)
               .map((column) =>
                 column.key === "actions" ? (
-                  <TableCell key={String(column.key)} className="flex gap-2">
+                  <TableCell
+                    key={String(column.key)}
+                    className="flex gap-2 justify-center"
+                  >
                     {renderActions ? renderActions(item) : null}
                   </TableCell>
                 ) : (
-                  <TableCell key={String(column.key)}>
+                  <TableCell key={String(column.key)} className="text-center">
                     {renderCell(item, column.key as keyof T)}
                   </TableCell>
                 )
