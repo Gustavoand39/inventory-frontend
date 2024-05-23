@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import ProductForm from "../../../components/Inventory/Modal/ProductForm";
@@ -7,6 +7,7 @@ import ProductTable from "../../../components/ui/Table/CustomTable";
 import ProductFooter from "../../../components/ui/Table/ProductPagination";
 import ProductActions from "../../../components/Inventory/Table/RenderActions";
 import CustomModal from "../../../components/ui/Modal/CustomModal";
+import debounce from "../../../helpers/debounce";
 
 import {
   initialProductColumns,
@@ -18,6 +19,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  searchProducts,
 } from "../../../services/products";
 import useForm from "../../../hooks/useForm";
 import { IProduct } from "../../../interfaces/Product";
@@ -25,14 +27,6 @@ import { IColumn } from "../../../interfaces/Table";
 import handleAxiosError from "../../../helpers/handleAxiosError";
 
 const ProductList = () => {
-  const [image, setImage] = useState<File | null>(null);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [selectedElement, setSelectedElement] = useState<string>("");
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [columns, setColumns] = useState<IColumn<IProduct>[]>(
-    initialProductColumns
-  );
-
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -41,6 +35,14 @@ const ProductList = () => {
   const [totalProducts, setTotalProducts] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(0);
+
+  const [image, setImage] = useState<File | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedElement, setSelectedElement] = useState<string>("");
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [columns, setColumns] = useState<IColumn<IProduct>[]>(
+    initialProductColumns
+  );
 
   const { values, handleInputChange, setFormValue, reset } =
     useForm(initialProductState);
@@ -151,6 +153,13 @@ const ProductList = () => {
     />
   );
 
+  const searchProduct = useCallback(
+    debounce(async (word) => {
+      await searchProducts(word as string, setProducts);
+    }, 300),
+    []
+  );
+
   // TODO: Implementar el componente de búsqueda
   // TODO: Mover la lógica de paginación a un hook (si es posible)
 
@@ -168,6 +177,7 @@ const ProductList = () => {
             openCreateModal={openCreateProductModal}
             setRowsPerPage={setRowsPerPage}
             setPage={setPage}
+            searchCallback={searchProduct}
           />
         }
         bottomContent={

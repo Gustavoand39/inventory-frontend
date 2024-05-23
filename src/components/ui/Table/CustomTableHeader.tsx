@@ -26,6 +26,7 @@ interface IProductTableHeader extends ITableHeader {
   openCreateModal: () => void;
   setRowsPerPage: (rowsPerPage: number) => void;
   setPage: (page: number) => void;
+  searchCallback: (search: string) => void;
 }
 
 const CustomTableHeader = ({
@@ -35,6 +36,7 @@ const CustomTableHeader = ({
   openCreateModal,
   setRowsPerPage,
   setPage,
+  searchCallback,
 }: IProductTableHeader) => {
   const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
 
@@ -54,6 +56,7 @@ const CustomTableHeader = ({
     toggleColumnVisibility(key, !visibleColumns.includes(key));
   };
 
+  // Cambia la cantidad de filas por página
   const onRowsPerPageChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(Number(e.target.value));
@@ -70,6 +73,8 @@ const CustomTableHeader = ({
           className="w-full sm:max-w-[40%]"
           placeholder="Buscar por nombre..."
           startContent={<SearchIcon height={24} />}
+          onChange={(e) => searchCallback(e.target.value)}
+          onClear={() => searchCallback("")}
         />
 
         <div className="flex gap-3">

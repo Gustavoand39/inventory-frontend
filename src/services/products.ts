@@ -131,3 +131,24 @@ export const deleteProduct = async (id: number): Promise<boolean> => {
     return false;
   }
 };
+
+export const searchProducts = async (
+  word: string,
+  setProducts: (products: IProduct[]) => void
+): Promise<void> => {
+  console.log(word);
+  try {
+    const { data } = await api.get<IProductsResp>(`products/search`, {
+      params: { word },
+    });
+
+    console.log(data);
+
+    if (data.products) {
+      setProducts(data.products);
+    }
+  } catch (error) {
+    const resp = handleAxiosError(error);
+    toast.error(resp.message);
+  }
+};
