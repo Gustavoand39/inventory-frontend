@@ -51,7 +51,6 @@ const Login: React.FC = (): JSX.Element => {
       const resp = await login(username, password);
 
       if (!resp.error) {
-        console.log(resp);
         remember
           ? localStorage.setItem("user", username)
           : localStorage.removeItem("user");

@@ -34,7 +34,7 @@ const ProductList = () => {
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [totalProducts, setTotalProducts] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(0);
+  const [totalPages, setTotalPages] = useState<number>(1);
 
   const [image, setImage] = useState<File | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
