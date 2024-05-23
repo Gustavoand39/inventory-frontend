@@ -47,9 +47,20 @@ const ProductList = () => {
   const { values, handleInputChange, setFormValue, reset } =
     useForm(initialProductState);
 
+  //* OBTENER TODOS LOS PRODUCTOS
+  const getAllProducts = useCallback(async () => {
+    await getProducts({
+      page,
+      limit: rowsPerPage,
+      setProducts,
+      setTotalProducts,
+      setTotalPages,
+    });
+  }, [page, rowsPerPage]);
+
   useEffect(() => {
     getAllProducts();
-  }, [page, rowsPerPage]);
+  }, [getAllProducts]);
 
   const toggleColumnVisibility = (key: string, visible: boolean) => {
     setColumns((prevColumns) =>
@@ -62,17 +73,6 @@ const ProductList = () => {
   const clearStates = () => {
     reset(initialProductState);
     setImage(null);
-  };
-
-  //* OBTENER TODOS LOS PRODUCTOS
-  const getAllProducts = async () => {
-    await getProducts({
-      page,
-      limit: rowsPerPage,
-      setProducts,
-      setTotalProducts,
-      setTotalPages,
-    });
   };
 
   //* CREAR PRODUCTO
@@ -153,14 +153,10 @@ const ProductList = () => {
     />
   );
 
-  const searchProduct = useCallback(
-    debounce(async (word) => {
-      await searchProducts(word as string, setProducts);
-    }, 300),
-    []
-  );
+  const searchProduct = debounce(async (word) => {
+    await searchProducts(word as string, setProducts);
+  });
 
-  // TODO: Implementar el componente de búsqueda
   // TODO: Mover la lógica de paginación a un hook (si es posible)
 
   return (
