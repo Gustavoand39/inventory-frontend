@@ -153,11 +153,18 @@ const ProductList = () => {
     />
   );
 
-  const searchProduct = debounce(async (word) => {
-    await searchProducts(word as string, setProducts);
+  const searchProduct = debounce({
+    func: async (word) => {
+      await searchProducts({
+        word: word,
+        page,
+        limit: rowsPerPage,
+        setProducts,
+        setTotalProducts,
+        setTotalPages,
+      });
+    },
   });
-
-  // TODO: Mover la lógica de paginación a un hook (si es posible)
 
   return (
     <section>

@@ -132,20 +132,32 @@ export const deleteProduct = async (id: number): Promise<boolean> => {
   }
 };
 
-export const searchProducts = async (
-  word: string,
-  setProducts: (products: IProduct[]) => void
-): Promise<void> => {
-  console.log(word);
+interface ISearchProductsProps {
+  word: string;
+  page: number;
+  limit: number;
+  setProducts: (products: IProduct[]) => void;
+  setTotalProducts: (total: number) => void;
+  setTotalPages: (totalPages: number) => void;
+}
+
+export const searchProducts = async ({
+  word,
+  page,
+  limit,
+  setProducts,
+  setTotalProducts,
+  setTotalPages,
+}: ISearchProductsProps): Promise<void> => {
   try {
     const { data } = await api.get<IProductsResp>(`products/search`, {
-      params: { word },
+      params: { word, page, limit },
     });
-
-    console.log(data);
 
     if (data.products) {
       setProducts(data.products);
+      setTotalProducts(data.totalItems);
+      setTotalPages(data.totalPages);
     }
   } catch (error) {
     const resp = handleAxiosError(error);
