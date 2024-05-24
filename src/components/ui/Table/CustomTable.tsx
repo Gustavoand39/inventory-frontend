@@ -28,6 +28,9 @@ const CustomTable = <T,>({
 }: ICustomTable<T>) => {
   // Renderiza el contenido de la celda
   const renderCell = (item: T, column: IColumn<T>): ReactNode => {
+    // Si la columna es de acciones, ejecuta la función para renderizar las acciones
+    if (column.key === "actions" && renderActions) return renderActions(item);
+
     // Si la columna tiene una función para renderizar la celda, la ejecuta
     if (column.renderCell) return column.renderCell(item);
 
@@ -74,19 +77,11 @@ const CustomTable = <T,>({
           >
             {columns
               .filter((column) => column.visible)
-              .map((column) =>
-                column.key === "actions" ? (
-                  <TableCell key={String(column.key)}>
-                    <div className="flex justify-center">
-                      {renderActions ? renderActions(item) : null}
-                    </div>
-                  </TableCell>
-                ) : (
-                  <TableCell key={String(column.key)} className="text-center">
-                    {renderCell(item, column)}
-                  </TableCell>
-                )
-              )}
+              .map((column) => (
+                <TableCell key={String(column.key)} className="text-center">
+                  {renderCell(item, column)}
+                </TableCell>
+              ))}
           </TableRow>
         ))}
       </TableBody>
