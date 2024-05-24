@@ -7,10 +7,13 @@ import ProductTable from "../../../components/ui/Table/CustomTable";
 import ProductFooter from "../../../components/ui/Table/ProductPagination";
 import ProductActions from "../../../components/Inventory/Table/RenderActions";
 import CustomModal from "../../../components/ui/Modal/CustomModal";
-import renderImage from "../../../components/Inventory/Table/renderImage";
-import RenderActions from "../../../components/Inventory/Table/RenderActions";
+// import renderImage from "../../../components/Inventory/Table/renderImage";
+// import RenderActions from "../../../components/Inventory/Table/RenderActions";
 
-import { initialProductState } from "../../../constants/initialStateProducts";
+import {
+  initialProductColumns,
+  initialProductState,
+} from "../../../constants/initialStateProducts";
 import {
   getProducts,
   getProduct,
@@ -40,6 +43,9 @@ const ProductList = () => {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [selectedElement, setSelectedElement] = useState<string>("");
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [columns, setColumns] = useState<IColumn<IProduct>[]>(
+    initialProductColumns
+  );
 
   const { values, handleInputChange, setFormValue, reset } =
     useForm(initialProductState);
@@ -73,6 +79,14 @@ const ProductList = () => {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+
+  const toggleColumnVisibility = (key: string, visible: boolean) => {
+    setColumns((prevColumns) =>
+      prevColumns.map((column) =>
+        column.key === key ? { ...column, visible } : column
+      )
+    );
+  };
 
   const openCreateProductModal = () => setIsCreateOpen(true);
 
@@ -156,48 +170,24 @@ const ProductList = () => {
     },
   });
 
-  const initialProductColumns: IColumn<IProduct>[] = [
-    { key: "id", label: "Identificador", visible: false },
-    { key: "name", label: "Nombre", visible: true },
-    { key: "description", label: "Descripción", visible: false },
-    { key: "stock", label: "Stock", visible: true },
-    { key: "minStock", label: "Stock Mínimo", visible: true },
-    {
-      key: "image",
-      label: "Imagen",
-      visible: true,
-      renderCell: renderImage,
-    },
-    { key: "category", label: "Categoría", visible: true },
-    {
-      key: "actions",
-      label: "Acciones",
-      visible: true,
-      renderCell: (item: IProduct) => (
-        <RenderActions
-          item={item}
-          openEditModal={openEditProductModal}
-          openDeleteModal={openDeleteProductModal}
-        />
-      ),
-    },
-  ];
+  // TODO: Mover las columnas iniciales a otro archivo
+  // TODO: Intentar hacer que renderActions esté dentro de las columas iniciales
 
   return (
     <section>
       <ProductTable
         aria="Lista de productos"
         data={products}
-        columns={initialProductColumns}
+        columns={columns}
         topContent={
           <ProductHeader
             columns={initialProductColumns}
             length={totalProducts}
+            toggleColumnVisibility={toggleColumnVisibility}
             openCreateModal={openCreateProductModal}
             setRowsPerPage={setRowsPerPage}
             setPage={setPage}
             searchCallback={searchProduct}
-            toggleColumnVisibility={() => {}}
           />
         }
         bottomContent={
