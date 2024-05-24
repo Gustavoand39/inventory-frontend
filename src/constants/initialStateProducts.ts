@@ -1,5 +1,6 @@
 import { IProduct } from "../interfaces/Product";
 import { IColumn } from "../interfaces/Table";
+import renderImage from "../components/Inventory/Table/renderImage";
 
 export const initialProductColumns: IColumn<IProduct>[] = [
   { key: "id", label: "Identificador", visible: false },
@@ -7,7 +8,12 @@ export const initialProductColumns: IColumn<IProduct>[] = [
   { key: "description", label: "Descripción", visible: false },
   { key: "stock", label: "Stock", visible: true },
   { key: "minStock", label: "Stock Mínimo", visible: true },
-  { key: "image", label: "Imagen", visible: false },
+  {
+    key: "image",
+    label: "Imagen",
+    visible: true,
+    renderCell: renderImage,
+  },
   { key: "category", label: "Categoría", visible: true },
   { key: "actions", label: "Acciones", visible: true },
 ];

@@ -126,11 +126,11 @@ const ProductForm = ({
           name="image"
           accept="image/*"
           onChange={(e) => setImage(e.target.files?.[0] || null)}
-          className={`input-file ${image ? "w-2/3" : "w-full"}`}
+          className={`input-file ${src ? "w-3/4" : "w-full"}`}
         />
 
         <Image
-          height={14}
+          width={80}
           className={src ? "flex" : "hidden"}
           alt="Imagen del producto"
           src={src as string}

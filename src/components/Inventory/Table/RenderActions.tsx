@@ -14,7 +14,7 @@ const RenderActions: React.FC<RenderActionsProps> = ({
   openEditModal,
   openDeleteModal,
 }) => (
-  <div className="flex gap-2">
+  <div className="flex gap-2 h-[100%]">
     <Button
       isIconOnly
       size="sm"

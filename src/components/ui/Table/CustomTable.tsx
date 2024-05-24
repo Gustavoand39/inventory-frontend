@@ -27,8 +27,12 @@ const CustomTable = <T,>({
   renderActions,
 }: ICustomTable<T>) => {
   // Renderiza el contenido de la celda
-  const renderCell = (item: T, columnKey: keyof T): ReactNode => {
-    const value = item[columnKey];
+  const renderCell = (item: T, column: IColumn<T>): ReactNode => {
+    // Si la columna tiene una función para renderizar la celda, la ejecuta
+    if (column.renderCell) return column.renderCell(item);
+
+    // Si el valor es un string, número o booleano, lo deja como string
+    const value = item[column.key as keyof T];
     if (
       typeof value === "string" ||
       typeof value === "number" ||
@@ -36,6 +40,8 @@ const CustomTable = <T,>({
     ) {
       return value.toString();
     }
+
+    // Retorna el valor como un nodo de React (Componente, Fragment, etc.)
     return value as ReactNode;
   };
 
@@ -70,15 +76,14 @@ const CustomTable = <T,>({
               .filter((column) => column.visible)
               .map((column) =>
                 column.key === "actions" ? (
-                  <TableCell
-                    key={String(column.key)}
-                    className="flex gap-2 justify-center"
-                  >
-                    {renderActions ? renderActions(item) : null}
+                  <TableCell key={String(column.key)}>
+                    <div className="flex justify-center">
+                      {renderActions ? renderActions(item) : null}
+                    </div>
                   </TableCell>
                 ) : (
                   <TableCell key={String(column.key)} className="text-center">
-                    {renderCell(item, column.key as keyof T)}
+                    {renderCell(item, column)}
                   </TableCell>
                 )
               )}
