@@ -1,9 +1,7 @@
-import ListProducts from "./Products/ListProducts";
-
 const Inventory = () => {
   return (
     <>
-      <ListProducts />
+      <h1>Inventory</h1>
     </>
   );
 };

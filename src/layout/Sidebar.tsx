@@ -3,22 +3,10 @@ import { Link } from "react-router-dom";
 import menuItems from "../helpers/menuItems";
 import Brand from "../components/layout/Brand";
 
-import { HomeIcon, InboxStackIcon, UsersIcon } from "@heroicons/react/24/solid";
-
-interface IMenuIcon {
-  [key: string]: JSX.Element;
-}
-
 const Sidebar = () => {
   const [isActive, setIsActive] = useState(menuItems[0].key);
 
   const handleActive = (key: string): void => setIsActive(key);
-
-  const menuIcons: IMenuIcon = {
-    home: <HomeIcon height={24} />,
-    inventory: <InboxStackIcon height={24} />,
-    users: <UsersIcon height={24} />,
-  };
 
   return (
     <nav
@@ -41,7 +29,7 @@ const Sidebar = () => {
               }`}
               onClick={() => handleActive(item.key)}
             >
-              {menuIcons[item.key]}
+              {item.iconChild}
               {item.title}
             </li>
           </Link>
