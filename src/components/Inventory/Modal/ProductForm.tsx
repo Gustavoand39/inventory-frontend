@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { Image, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { toast } from "sonner";
 
-import { getCategories } from "../../../services/categories";
+import { getCategories } from "../../../services/categoryService";
 
 type FormValues = { [key: string]: unknown };
 

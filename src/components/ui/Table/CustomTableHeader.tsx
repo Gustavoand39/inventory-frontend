@@ -15,20 +15,29 @@ import {
 
 import { rowOptions } from "../../../constants/rowOptions";
 
-interface ITableHeader {
+interface ICustomTableHeader {
   columns: { key: string; label: string; visible: boolean }[];
   length: number;
-  toggleColumnVisibility: (key: string, visible: boolean) => void;
+  toggleColumnVisibility?: (key: string, visible: boolean) => void;
   openCreateModal?: () => void;
+  setRowsPerPage?: (rowsPerPage: number) => void;
+  setPage?: (page: number) => void;
+  searchCallback?: (search: string) => void;
 }
 
-interface IProductTableHeader extends ITableHeader {
-  openCreateModal: () => void;
-  setRowsPerPage: (rowsPerPage: number) => void;
-  setPage: (page: number) => void;
-  searchCallback: (search: string) => void;
-}
-
+/**
+ * Componente personalizado para el encabezado de la tabla
+ *
+ * @param {ICustomTableHeader} props Propiedades del componente
+ * @param {Array<{ key: string, label: string, visible: boolean }>} props.columns Columnas de la tabla
+ * @param {number} props.length Cantidad de registros
+ * @param {(key: string, visible: boolean) => void} [props.toggleColumnVisibility] Función para cambiar la visibilidad de las columnas
+ * @param {() => void} [props.openCreateModal] Función para abrir el modal de creación
+ * @param {(rowsPerPage: number) => void} [props.setRowsPerPage] Función para cambiar la cantidad de filas por página
+ * @param {(page: number) => void} [props.setPage] Función para cambiar la página actual
+ * @param {(search: string) => void} [props.searchCallback] Función para buscar registros
+ * @returns {JSX.Element} Elemento JSX
+ */
 const CustomTableHeader = ({
   columns,
   length,
@@ -37,7 +46,7 @@ const CustomTableHeader = ({
   setRowsPerPage,
   setPage,
   searchCallback,
-}: IProductTableHeader) => {
+}: ICustomTableHeader) => {
   const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
 
   // Actualiza las columnas visibles del dropdown
@@ -53,14 +62,17 @@ const CustomTableHeader = ({
       ? visibleColumns.filter((col) => col !== key)
       : [...visibleColumns, key];
     setVisibleColumns(updatedVisibleColumns);
-    toggleColumnVisibility(key, !visibleColumns.includes(key));
+    if (toggleColumnVisibility)
+      toggleColumnVisibility(key, !visibleColumns.includes(key));
   };
 
   // Cambia la cantidad de filas por página
   const onRowsPerPageChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setRowsPerPage(Number(e.target.value));
-      setPage(1);
+      if (setRowsPerPage && setPage) {
+        setRowsPerPage(Number(e.target.value));
+        setPage(1);
+      }
     },
     []
   );
@@ -73,8 +85,12 @@ const CustomTableHeader = ({
           className="w-full sm:max-w-[40%]"
           placeholder="Buscar por nombre..."
           startContent={<SearchIcon height={24} />}
-          onChange={(e) => searchCallback(e.target.value)}
-          onClear={() => searchCallback("")}
+          onChange={(e) => {
+            if (searchCallback) searchCallback(e.target.value);
+          }}
+          onClear={() => {
+            if (searchCallback) searchCallback("");
+          }}
         />
 
         <div className="flex gap-3">

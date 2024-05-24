@@ -1,7 +1,10 @@
+import ListCategories from "./Categories/ListCategories";
+
 const Categories = () => {
+
   return (
     <>
-      <h1>Categories</h1>
+      <ListCategories />
     </>
   );
 };

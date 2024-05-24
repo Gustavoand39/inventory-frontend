@@ -18,6 +18,19 @@ interface ICustomTable<T> {
   renderActions?: (item: T) => ReactNode;
 }
 
+/**
+ * Componente personalizado para una tabla
+ *
+ * @param {ICustomTable} props Propiedades del componente
+ * @param {string} props.aria Atributo aria-label de la tabla
+ * @param {T[]} props.data Datos a mostrar en la tabla
+ * @param {IColumn<T>[]} props.columns Columnas de la tabla
+ * @param {ReactNode} [props.topContent] Contenido superior de la tabla
+ * @param {ReactNode} [props.bottomContent] Contenido inferior de la tabla
+ * @param {(item: T) => ReactNode} [props.renderActions] Función para renderizar las acciones de la fila
+ * @returns {JSX.Element} Elemento JSX
+ * @template T Tipo de los datos
+ */
 const CustomTable = <T,>({
   aria,
   data,
@@ -25,7 +38,7 @@ const CustomTable = <T,>({
   topContent,
   bottomContent,
   renderActions,
-}: ICustomTable<T>) => {
+}: ICustomTable<T>): JSX.Element => {
   // Renderiza el contenido de la celda
   const renderCell = (item: T, column: IColumn<T>): ReactNode => {
     // Si la columna es de acciones, ejecuta la función para renderizar las acciones

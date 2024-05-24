@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import api from "../api/axiosConfig";
 import handleAxiosError from "../helpers/handleAxiosError";
 import { IProduct, IProductResponse } from "../interfaces/Product";
-import { getCategory } from "./categories";
+import { getCategory } from "./categoryService";
 import { uploadImage } from "./uploadFiles";
 
 interface IProductsResp extends IProductResponse {

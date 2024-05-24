@@ -21,7 +21,7 @@ import {
   updateProduct,
   deleteProduct,
   searchProducts,
-} from "../../../services/products";
+} from "../../../services/productService";
 import { IProduct } from "../../../interfaces/Product";
 import { IColumn } from "../../../interfaces/Table";
 import handleAxiosError from "../../../helpers/handleAxiosError";
