@@ -7,12 +7,10 @@ import ProductTable from "../../../components/ui/Table/CustomTable";
 import ProductFooter from "../../../components/ui/Table/ProductPagination";
 import ProductActions from "../../../components/Inventory/Table/RenderActions";
 import CustomModal from "../../../components/ui/Modal/CustomModal";
-import debounce from "../../../helpers/debounce";
+import renderImage from "../../../components/Inventory/Table/renderImage";
+import RenderActions from "../../../components/Inventory/Table/RenderActions";
 
-import {
-  initialProductColumns,
-  initialProductState,
-} from "../../../constants/initialStateProducts";
+import { initialProductState } from "../../../constants/initialStateProducts";
 import {
   getProducts,
   getProduct,
@@ -21,10 +19,11 @@ import {
   deleteProduct,
   searchProducts,
 } from "../../../services/products";
-import useForm from "../../../hooks/useForm";
 import { IProduct } from "../../../interfaces/Product";
 import { IColumn } from "../../../interfaces/Table";
 import handleAxiosError from "../../../helpers/handleAxiosError";
+import debounce from "../../../helpers/debounce";
+import useForm from "../../../hooks/useForm";
 
 const ProductList = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -35,54 +34,53 @@ const ProductList = () => {
   const [totalProducts, setTotalProducts] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const [image, setImage] = useState<File | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [selectedElement, setSelectedElement] = useState<string>("");
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [columns, setColumns] = useState<IColumn<IProduct>[]>(
-    initialProductColumns
-  );
 
   const { values, handleInputChange, setFormValue, reset } =
     useForm(initialProductState);
-
-  //* OBTENER TODOS LOS PRODUCTOS
-  const getAllProducts = useCallback(async () => {
-    await getProducts({
-      page,
-      limit: rowsPerPage,
-      setProducts,
-      setTotalProducts,
-      setTotalPages,
-    });
-  }, [page, rowsPerPage]);
-
-  useEffect(() => {
-    getAllProducts();
-  }, [getAllProducts]);
-
-  const toggleColumnVisibility = (key: string, visible: boolean) => {
-    setColumns((prevColumns) =>
-      prevColumns.map((column) =>
-        column.key === key ? { ...column, visible } : column
-      )
-    );
-  };
 
   const clearStates = () => {
     reset(initialProductState);
     setImage(null);
   };
 
-  //* CREAR PRODUCTO
+  const fetchProducts = useCallback(async () => {
+    if (searchTerm) {
+      await searchProducts({
+        word: searchTerm,
+        page,
+        limit: rowsPerPage,
+        setProducts,
+        setTotalProducts,
+        setTotalPages,
+      });
+    } else {
+      await getProducts({
+        page,
+        limit: rowsPerPage,
+        setProducts,
+        setTotalProducts,
+        setTotalPages,
+      });
+    }
+  }, [page, rowsPerPage, searchTerm]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
   const openCreateProductModal = () => setIsCreateOpen(true);
 
   const handleCreateProduct = async () => {
     setIsCreateOpen(false);
     const success = await createProduct(values, image);
     if (success) {
-      getAllProducts();
+      fetchProducts();
       clearStates();
     }
   };
@@ -92,7 +90,6 @@ const ProductList = () => {
     clearStates();
   };
 
-  //* EDITAR PRODUCTO
   const openEditProductModal = async (id: number) => {
     setIsEditOpen(true);
     const resp = await getProduct(id);
@@ -110,7 +107,7 @@ const ProductList = () => {
     setIsEditOpen(false);
     const success = await updateProduct(values, image);
     if (success) {
-      getAllProducts();
+      fetchProducts();
       clearStates();
     }
   };
@@ -120,7 +117,6 @@ const ProductList = () => {
     clearStates();
   };
 
-  //* ELIMINAR PRODUCTO
   const openDeleteProductModal = (product: IProduct) => {
     if (product.id) {
       setSelectedId(product.id);
@@ -133,7 +129,7 @@ const ProductList = () => {
     setIsDeleteOpen(false);
     const success = await deleteProduct(id);
     if (success) {
-      getAllProducts();
+      fetchProducts();
       clearStates();
     }
   };
@@ -154,33 +150,54 @@ const ProductList = () => {
   );
 
   const searchProduct = debounce({
-    func: async (word) => {
-      await searchProducts({
-        word: word,
-        page,
-        limit: rowsPerPage,
-        setProducts,
-        setTotalProducts,
-        setTotalPages,
-      });
+    func: async (word: string) => {
+      setSearchTerm(word);
+      setPage(1);
     },
   });
+
+  const initialProductColumns: IColumn<IProduct>[] = [
+    { key: "id", label: "Identificador", visible: false },
+    { key: "name", label: "Nombre", visible: true },
+    { key: "description", label: "Descripción", visible: false },
+    { key: "stock", label: "Stock", visible: true },
+    { key: "minStock", label: "Stock Mínimo", visible: true },
+    {
+      key: "image",
+      label: "Imagen",
+      visible: true,
+      renderCell: renderImage,
+    },
+    { key: "category", label: "Categoría", visible: true },
+    {
+      key: "actions",
+      label: "Acciones",
+      visible: true,
+      renderCell: (item: IProduct) => (
+        <RenderActions
+          item={item}
+          openEditModal={openEditProductModal}
+          openDeleteModal={openDeleteProductModal}
+        />
+      ),
+    },
+  ];
 
   return (
     <section>
       <ProductTable
         aria="Lista de productos"
         data={products}
-        columns={columns}
+        columns={initialProductColumns}
         topContent={
           <ProductHeader
-            columns={columns}
+            columns={initialProductColumns}
             length={totalProducts}
-            toggleColumnVisibility={toggleColumnVisibility}
             openCreateModal={openCreateProductModal}
             setRowsPerPage={setRowsPerPage}
             setPage={setPage}
             searchCallback={searchProduct}
+            toggleColumnVisibility={() => {}}
           />
         }
         bottomContent={
