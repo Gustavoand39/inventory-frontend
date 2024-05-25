@@ -58,10 +58,15 @@ const CustomTableHeader = ({
 
   // Cambia la visibilidad de las columnas
   const handleColumnToggle = (key: string) => {
+    // Si la columna que se intenta ocultar es la última visible, no hacer nada
+    if (visibleColumns.length === 1 && visibleColumns.includes(key)) return;
+
     const updatedVisibleColumns = visibleColumns.includes(key)
       ? visibleColumns.filter((col) => col !== key)
       : [...visibleColumns, key];
+
     setVisibleColumns(updatedVisibleColumns);
+
     if (toggleColumnVisibility)
       toggleColumnVisibility(key, !visibleColumns.includes(key));
   };
@@ -71,7 +76,7 @@ const CustomTableHeader = ({
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       if (setRowsPerPage && setPage) {
         setRowsPerPage(Number(e.target.value));
-        setPage(1);
+        setPage(1); // Volver a la primera página
       }
     },
     []

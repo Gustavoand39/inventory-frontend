@@ -23,13 +23,14 @@ import { IProduct } from "../../../interfaces/Product";
 import { IColumn } from "../../../interfaces/Table";
 import debounce from "../../../helpers/debounce";
 import useForm from "../../../hooks/useForm";
+import { rowOptions } from "../../../constants/rowOptions";
 
 const ProductList = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(rowOptions[0].value);
   const [totalProducts, setTotalProducts] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);

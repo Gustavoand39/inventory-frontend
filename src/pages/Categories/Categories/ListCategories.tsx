@@ -5,6 +5,7 @@ import CategoryHeader from "../../../components/ui/Table/CustomTableHeader";
 import CategoryFootter from "../../../components/ui/Table/ProductPagination";
 import CategoryForm from "../../../components/category/Modal/CategoryForm";
 import CategoryActions from "../../../components/category/table/RenderActions";
+import CustomModal from "../../../components/ui/Modal/CustomModal";
 
 import {
   initialCategoriesColumns,
@@ -22,14 +23,14 @@ import {
 import { IColumn } from "../../../interfaces/Table";
 import useForm from "../../../hooks/useForm";
 import debounce from "../../../helpers/debounce";
-import CustomModal from "../../../components/ui/Modal/CustomModal";
+import { rowOptions } from "../../../constants/rowOptions";
 
 const ListCategories = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-  const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(rowOptions[0].value);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [totalCategories, setTotalCategories] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
