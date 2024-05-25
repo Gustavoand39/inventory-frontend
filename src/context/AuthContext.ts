@@ -1,6 +1,5 @@
 import { createContext } from "react";
 import { IAuth, IAuthContext } from "../interfaces/AuthContext";
-import { IAuthResponse } from "../interfaces/Api";
 
 // Estado inicial para la autenticación
 export const initialAuthState: IAuth = {
@@ -11,13 +10,8 @@ export const initialAuthState: IAuth = {
 // Estado inicial para el contexto
 const initialAuthContext: IAuthContext = {
   auth: initialAuthState,
-  login: async (): Promise<IAuthResponse> => {
-    return {
-      error: true,
-      message: "¡No se ha implementado el login!",
-      token: "",
-      user: { id: 0, username: "" },
-    };
+  login: async (): Promise<boolean> => {
+    return false;
   },
   refreshToken: async (): Promise<void> => {},
   logout: () => {},

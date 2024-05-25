@@ -10,8 +10,6 @@ import {
 import useForm from "../../hooks/useForm";
 import { AuthContext } from "../../context/AuthContext";
 
-import handleAxiosError from "../../helpers/handleAxiosError";
-
 const Login: React.FC = (): JSX.Element => {
   const [remember, setRemember] = useState(false);
   const nameInput = useRef<HTMLInputElement>(null);
@@ -42,22 +40,17 @@ const Login: React.FC = (): JSX.Element => {
   const handleSubmit = async (): Promise<void> => {
     const { username, password } = values;
 
-    try {
-      if (!username || !password) {
-        toast.error("Debes completar los campos");
-        return;
-      }
+    if (!username || !password) {
+      toast.error("Debes completar los campos");
+      return;
+    }
 
-      const resp = await login(username, password);
+    const success = await login(username, password);
 
-      if (!resp.error) {
-        remember
-          ? localStorage.setItem("user", username)
-          : localStorage.removeItem("user");
-      }
-    } catch (error) {
-      const resp = handleAxiosError(error);
-      toast.error(resp.message);
+    if (success) {
+      remember
+        ? localStorage.setItem("user", username)
+        : localStorage.removeItem("user");
     }
   };
 

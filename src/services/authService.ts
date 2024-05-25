@@ -1,4 +1,4 @@
-// src/services/authService.js
+import { toast } from "sonner";
 import api from "../api/axiosConfig";
 import { IAuthResponse } from "../interfaces/Api";
 
@@ -11,6 +11,12 @@ export const login = async (
 };
 
 export const refreshToken = async (token: string): Promise<IAuthResponse> => {
-  const { data } = await api.post("auth/refresh", { token });
-  return data as IAuthResponse;
+  const { data } = await api.post<IAuthResponse>("auth/refresh", { token });
+
+  if (data.error) {
+    toast.error(data.message);
+    return data;
+  }
+
+  return data;
 };
