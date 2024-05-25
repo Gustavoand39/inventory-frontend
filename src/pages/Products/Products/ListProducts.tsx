@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 
-import ProductForm from "../../../components/Inventory/Modal/ProductForm";
+import ProductForm from "../../../components/products/Modal/ProductForm";
 import ProductHeader from "../../../components/ui/Table/CustomTableHeader";
 import ProductTable from "../../../components/ui/Table/CustomTable";
 import ProductFooter from "../../../components/ui/Table/ProductPagination";
-import ProductActions from "../../../components/Inventory/Table/RenderActions";
+import ProductActions from "../../../components/products/Table/RenderActions";
 import CustomModal from "../../../components/ui/Modal/CustomModal";
 
 import {

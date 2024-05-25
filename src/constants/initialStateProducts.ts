@@ -3,7 +3,7 @@ import {
   ProductFormValues,
 } from "../interfaces/Product";
 import { IColumn } from "../interfaces/Table";
-import renderImage from "../components/Inventory/Table/renderImage";
+import renderImage from "../components/products/Table/renderImage";
 
 export const initialProductColumns: IColumn<IProduct>[] = [
   { key: "id", label: "Identificador", visible: false },
