@@ -3,7 +3,6 @@ import {
   CubeIcon,
   TagIcon,
   UsersIcon,
-  UserGroupIcon,
   InboxStackIcon,
 } from "@heroicons/react/24/solid";
 
@@ -38,12 +37,6 @@ const menuItems: MenuItem[] = [
     key: "users",
     url: "/usuarios",
     iconChild: <UsersIcon height={24} />,
-  },
-  {
-    title: "Roles",
-    key: "roles",
-    url: "/roles",
-    iconChild: <UserGroupIcon height={24} />,
   },
   {
     title: "Inventario",
