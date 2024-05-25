@@ -74,11 +74,11 @@ export const createProduct = async (
 ): Promise<boolean> => {
   try {
     if (image) {
-      const { data } = await getCategory(product.category);
+      const { name } = await getCategory(product.category);
 
       const formData = new FormData();
       formData.append("image", image);
-      formData.append("folder", data.name);
+      formData.append("folder", name);
 
       const resp = await uploadImage(formData);
       product.image = resp.data;
@@ -106,11 +106,11 @@ export const updateProduct = async (
 ): Promise<boolean> => {
   try {
     if (image) {
-      const { data } = await getCategory(product.category);
+      const { name } = await getCategory(product.category);
 
       const formData = new FormData();
       formData.append("image", image);
-      formData.append("folder", data.name);
+      formData.append("folder", name);
 
       const resp = await uploadImage(formData);
       product.image = resp.data;
