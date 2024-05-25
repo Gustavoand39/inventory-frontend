@@ -1,12 +1,12 @@
 import React from "react";
 import { Button } from "@nextui-org/react";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
-import { IProduct } from "../../../interfaces/Product";
+import { ICategory } from "../../../interfaces/Categories";
 
 interface RenderActionsProps {
-  item: IProduct;
+  item: ICategory;
   openEditModal: (id: number) => void;
-  openDeleteModal: (item: IProduct) => void;
+  openDeleteModal: (item: ICategory) => void;
 }
 
 const RenderActions: React.FC<RenderActionsProps> = ({

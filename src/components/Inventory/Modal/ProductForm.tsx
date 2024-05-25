@@ -1,8 +1,8 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { Image, Input, Select, SelectItem, Textarea } from "@nextui-org/react";
-import { toast } from "sonner";
 
 import { getCategories } from "../../../services/categoryService";
+import { ICategory } from "../../../interfaces/Categories";
 
 type FormValues = { [key: string]: unknown };
 
@@ -23,7 +23,7 @@ const ProductForm = ({
   image,
   setImage,
 }: IProductForm) => {
-  const [categories, setCategories] = useState<FormValues[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [src, setSrc] = useState<string | File>("");
 
   useEffect(() => {
@@ -35,12 +35,7 @@ const ProductForm = ({
   }, [image, values.image]);
 
   const getCateg = async (): Promise<void> => {
-    const resp = await getCategories();
-    if (resp.error) {
-      toast.error(resp.message);
-      return;
-    }
-    setCategories(resp.data);
+    await getCategories(setCategories);
   };
 
   const renderImage = (): void => {

@@ -124,11 +124,9 @@ const ProductList = () => {
 
   //* Eliminar
   const openDeleteProductModal = (product: IProduct) => {
-    if (product.id) {
-      setSelectedId(product.id);
-      setSelectedElement(product.name);
-      setIsDeleteOpen(true);
-    }
+    setSelectedId(product.id);
+    setSelectedElement(product.name);
+    setIsDeleteOpen(true);
   };
 
   const handleDeleteProduct = async (id: number) => {

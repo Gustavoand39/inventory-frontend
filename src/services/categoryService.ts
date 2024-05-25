@@ -139,13 +139,8 @@ export const deleteCategory = async (id: number): Promise<boolean> => {
   }
 };
 
-interface IGetCategoriesProps {
+interface IGetSearchCategory extends IGetCategoriesProps {
   word: string;
-  page: number;
-  limit: number;
-  setCategories: (categories: ICategory[]) => void;
-  setTotalCategories: (total: number) => void;
-  setTotalPages: (total: number) => void;
 }
 
 export const searchCategories = async ({
@@ -155,7 +150,7 @@ export const searchCategories = async ({
   setCategories,
   setTotalCategories,
   setTotalPages,
-}: IGetCategoriesProps): Promise<void> => {
+}: IGetSearchCategory): Promise<void> => {
   try {
     const { data } = await api.get<ICategoryListResponse>("categories/search", {
       params: { word, page, limit },
