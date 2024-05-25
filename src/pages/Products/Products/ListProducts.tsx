@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { toast } from "sonner";
 
 import ProductForm from "../../../components/Inventory/Modal/ProductForm";
 import ProductHeader from "../../../components/ui/Table/CustomTableHeader";
@@ -7,15 +6,13 @@ import ProductTable from "../../../components/ui/Table/CustomTable";
 import ProductFooter from "../../../components/ui/Table/ProductPagination";
 import ProductActions from "../../../components/Inventory/Table/RenderActions";
 import CustomModal from "../../../components/ui/Modal/CustomModal";
-// import renderImage from "../../../components/Inventory/Table/renderImage";
-// import RenderActions from "../../../components/Inventory/Table/RenderActions";
 
 import {
   initialProductColumns,
   initialProductState,
 } from "../../../constants/initialStateProducts";
 import {
-  getProducts,
+  getListProducts,
   getProduct,
   createProduct,
   updateProduct,
@@ -24,7 +21,6 @@ import {
 } from "../../../services/productService";
 import { IProduct } from "../../../interfaces/Product";
 import { IColumn } from "../../../interfaces/Table";
-import handleAxiosError from "../../../helpers/handleAxiosError";
 import debounce from "../../../helpers/debounce";
 import useForm from "../../../hooks/useForm";
 
@@ -55,6 +51,7 @@ const ProductList = () => {
     setImage(null);
   };
 
+  //* Obtener productos
   const fetchProducts = useCallback(async () => {
     if (searchTerm) {
       await searchProducts({
@@ -66,7 +63,7 @@ const ProductList = () => {
         setTotalPages,
       });
     } else {
-      await getProducts({
+      await getListProducts({
         page,
         limit: rowsPerPage,
         setProducts,
@@ -88,11 +85,12 @@ const ProductList = () => {
     );
   };
 
+  //* Crear
   const openCreateProductModal = () => setIsCreateOpen(true);
 
   const handleCreateProduct = async () => {
     setIsCreateOpen(false);
-    const success = await createProduct(values, image);
+    const success = await createProduct(values as IProduct, image);
     if (success) {
       fetchProducts();
       clearStates();
@@ -104,22 +102,15 @@ const ProductList = () => {
     clearStates();
   };
 
+  //* Editar
   const openEditProductModal = async (id: number) => {
     setIsEditOpen(true);
-    const resp = await getProduct(id);
-
-    if (resp.error) {
-      const error = handleAxiosError(resp.error);
-      toast.error(error.message);
-      return;
-    }
-
-    if (!resp.error && resp.product) setFormValue(resp.product);
+    await getProduct(id, setFormValue);
   };
 
   const handleEditProduct = async () => {
     setIsEditOpen(false);
-    const success = await updateProduct(values, image);
+    const success = await updateProduct(values as IProduct, image);
     if (success) {
       fetchProducts();
       clearStates();
@@ -131,6 +122,7 @@ const ProductList = () => {
     clearStates();
   };
 
+  //* Eliminar
   const openDeleteProductModal = (product: IProduct) => {
     if (product.id) {
       setSelectedId(product.id);
@@ -169,9 +161,6 @@ const ProductList = () => {
       setPage(1);
     },
   });
-
-  // TODO: Mover las columnas iniciales a otro archivo
-  // TODO: Intentar hacer que renderActions esté dentro de las columas iniciales
 
   return (
     <section>

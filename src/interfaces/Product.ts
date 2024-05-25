@@ -1,7 +1,6 @@
-import { IApiResponse } from "./Api";
+import { IApiResponse, IPaginatedResponse } from "./Api";
 
-export interface IProduct {
-  id?: number;
+export interface INewProduct {
   name: string;
   description: string;
   stock: number;
@@ -10,7 +9,16 @@ export interface IProduct {
   category: number;
 }
 
-export interface IProductResponse extends IApiResponse {
-  product?: IProduct;
-  products?: IProduct[];
+export interface IProduct extends INewProduct {
+  id: number;
 }
+
+export interface IProductListResponse extends IPaginatedResponse {
+  data: IProduct[];
+}
+
+export interface IProductResponse extends IApiResponse {
+  data: IProduct;
+}
+
+export type ProductFormValues = Partial<IProduct & INewProduct>;

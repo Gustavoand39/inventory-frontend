@@ -1,17 +1,15 @@
+import { IUserAuth } from "./user";
 export interface IApiResponse {
   error: boolean;
   message: string;
 }
 
-export interface IApiDataResponse extends IApiResponse {
-  totalItems: number;
-  totalPages: number;
+export interface IPaginatedResponse extends IApiResponse {
+  totalItems?: number;
+  totalPages?: number;
 }
 
 export interface IAuthResponse extends IApiResponse {
   token: string;
-  user: {
-    id: number;
-    username: string;
-  };
+  user: IUserAuth;
 }

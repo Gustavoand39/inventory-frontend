@@ -2,14 +2,15 @@ import { toast } from "sonner";
 
 import api from "../api/axiosConfig";
 import handleAxiosError from "../helpers/handleAxiosError";
-import { IProduct, IProductResponse } from "../interfaces/Product";
+import { IApiResponse } from "../interfaces/Api";
+import {
+  INewProduct,
+  IProduct,
+  IProductListResponse,
+  IProductResponse,
+} from "../interfaces/Product";
 import { getCategory } from "./categoryService";
 import { uploadImage } from "./uploadFiles";
-
-interface IProductsResp extends IProductResponse {
-  totalItems: number;
-  totalPages: number;
-}
 
 interface IGetProductsProps {
   page: number;
@@ -19,7 +20,7 @@ interface IGetProductsProps {
   setTotalPages: (total: number) => void;
 }
 
-export const getProducts = async ({
+export const getListProducts = async ({
   page,
   limit,
   setProducts,
@@ -27,12 +28,17 @@ export const getProducts = async ({
   setTotalPages,
 }: IGetProductsProps): Promise<void> => {
   try {
-    const { data } = await api.get<IProductsResp>(
+    const { data } = await api.get<IProductListResponse>(
       `products/?page=${page}&limit=${limit}`
     );
 
-    if (data.products) {
-      setProducts(data.products);
+    if (data.error) {
+      toast.error(data.message);
+      return;
+    }
+
+    if (data.totalItems && data.totalPages) {
+      setProducts(data.data);
       setTotalProducts(data.totalItems);
       setTotalPages(data.totalPages);
     }
@@ -42,13 +48,28 @@ export const getProducts = async ({
   }
 };
 
-export const getProduct = async (id: number) => {
-  const { data } = await api.get(`products/${id}`);
-  return data as IProductResponse;
+export const getProduct = async (
+  id: number,
+  setFormValue: (product: IProduct) => void
+): Promise<void> => {
+  try {
+    const { data } = await api.get(`products/${id}`);
+
+    if (data.error) {
+      const error = handleAxiosError(data.error);
+      toast.error(error.message);
+      return;
+    }
+
+    if (!data.error && data.data) setFormValue(data.data);
+  } catch (error) {
+    const resp = handleAxiosError(error);
+    toast.error(resp.message);
+  }
 };
 
 export const createProduct = async (
-  product: IProduct,
+  product: INewProduct,
   image: File | null
 ): Promise<boolean> => {
   try {
@@ -63,7 +84,7 @@ export const createProduct = async (
       product.image = resp.data;
     }
 
-    const { data } = await api.post<IProductResponse>("products/", product);
+    const { data } = await api.post<IApiResponse>("products/", product);
 
     if (data.error) {
       toast.error(data.message);
@@ -150,12 +171,17 @@ export const searchProducts = async ({
   setTotalPages,
 }: ISearchProductsProps): Promise<void> => {
   try {
-    const { data } = await api.get<IProductsResp>(`products/search`, {
+    const { data } = await api.get<IProductListResponse>(`products/search`, {
       params: { word, page, limit },
     });
 
-    if (data.products) {
-      setProducts(data.products);
+    if (data.error) {
+      toast.error(data.message);
+      return;
+    }
+
+    if (data.totalItems && data.totalPages) {
+      setProducts(data.data);
       setTotalProducts(data.totalItems);
       setTotalPages(data.totalPages);
     }
