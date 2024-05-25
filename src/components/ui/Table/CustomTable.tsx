@@ -92,7 +92,9 @@ const CustomTable = <T,>({
               .filter((column) => column.visible)
               .map((column) => (
                 <TableCell key={String(column.key)} className="text-center">
-                  {renderCell(item, column)}
+                  <div className="flex justify-center items-center">
+                    {renderCell(item, column)}
+                  </div>
                 </TableCell>
               ))}
           </TableRow>

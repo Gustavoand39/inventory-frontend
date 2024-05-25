@@ -126,7 +126,7 @@ const ProductForm = ({
 
         <Image
           width={80}
-          className={src ? "flex" : "hidden"}
+          className={`dark:bg-zinc-700 p-2 ${src ? "flex" : "hidden"}`}
           alt="Imagen del producto"
           src={src as string}
         />
