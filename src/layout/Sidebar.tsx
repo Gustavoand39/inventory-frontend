@@ -7,7 +7,7 @@ const Sidebar = () => {
 
   return (
     <nav
-      className="group h-screen hidden md:flex flex-col w-24 hover:w-56
+      className="group h-screen hidden md:flex flex-col w-24 hover:w-48
       bg-gray-700 dark:bg-neutral-900 text-white transition-all duration-500 ease-in-out py-6"
       aria-label="Menú principal"
     >
