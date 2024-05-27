@@ -1,7 +1,4 @@
-import {
-  IProduct,
-  ProductFormValues,
-} from "../interfaces/Product";
+import { IProduct, ProductFormValues } from "../interfaces/Product";
 import { IColumn } from "../interfaces/Table";
 import renderImage from "../components/products/Table/renderImage";
 
@@ -14,7 +11,7 @@ export const initialProductColumns: IColumn<IProduct>[] = [
   {
     key: "image",
     label: "Imagen",
-    visible: true,
+    visible: false,
     renderCell: renderImage,
   },
   { key: "category", label: "Categoría", visible: true },
