@@ -7,13 +7,13 @@ export interface IUserAuth {
 
 export interface INewUser {
   name: string;
-  lastname: string;
-  username: string;
+  last_name: string;
+  user_name: string;
   email: string;
   password: string;
 }
 
-export interface IUser extends INewUser {
+export interface IUser extends Omit<INewUser, "password"> {
   id: number;
 }
 
