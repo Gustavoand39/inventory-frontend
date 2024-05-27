@@ -5,7 +5,7 @@ import UserTable from "../../../components/ui/Table/CustomTable";
 import UserForm from "../../../components/users/modal/UserForm";
 import NewUserForm from "../../../components/users/modal/NewUserForm";
 import UserHeader from "../../../components/ui/Table/CustomTableHeader";
-import UserFootter from "../../../components/ui/Table/ProductPagination";
+import UserFootter from "../../../components/ui/Table/CustomTableFooter";
 import UserActions from "../../../components/users/table/RenderActions";
 
 import {
