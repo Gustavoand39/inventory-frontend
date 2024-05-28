@@ -12,7 +12,8 @@ const ProductCard = ({ item }: IProductCard) => {
       isPressable
       key={item.id}
       shadow="none"
-      className="border rounded-lg bg-white hover:shadow-lg transition duration-300 ease-in-out"
+      className="border border-neutral-400 rounded-lg bg-white hover:shadow-lg transition duration-300 ease-in-out
+      dark:bg-neutral-800 dark:hover:border-neutral-100"
       onPress={() => console.log("item pressed")}
     >
       <CardHeader className="flex gap-3">
