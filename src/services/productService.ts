@@ -68,6 +68,24 @@ export const getProduct = async (
   }
 };
 
+export const getLowProducts = async (
+  setProducts: (products: IProduct[]) => void
+): Promise<void> => {
+  try {
+    const { data } = await api.get<IProductListResponse>("products/low");
+
+    if (data.error) {
+      toast.error(data.message);
+      return;
+    }
+
+    setProducts(data.data);
+  } catch (error) {
+    const resp = handleAxiosError(error);
+    toast.error(resp.message);
+  }
+};
+
 export const createProduct = async (
   product: INewProduct,
   image: File | null

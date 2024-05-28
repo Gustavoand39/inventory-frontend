@@ -1,7 +1,9 @@
+import LowProducts from "./products/LowProducts";
+
 const Dashboard = () => {
   return (
     <>
-      <h1>Dashboard</h1>
+      <LowProducts />
     </>
   );
 };
