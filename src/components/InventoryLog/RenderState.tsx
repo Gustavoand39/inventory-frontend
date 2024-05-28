@@ -1,6 +1,6 @@
-import { InventoryState } from "../../interfaces/Inventory";
+import { InventoryState } from "../../interfaces/InventoryLog";
 
-const RenderState = (state: InventoryState) => (
+const RenderState: React.FC<InventoryState> = (state): JSX.Element => (
   <div className="p-4 bg-gray-100 rounded-md mb-4">
     <p>
       <strong>ID:</strong> {state.id}

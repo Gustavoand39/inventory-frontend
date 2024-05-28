@@ -1,14 +1,14 @@
-import React from "react";
 import { Button } from "@nextui-org/react";
 import { EyeIcon } from "@heroicons/react/24/solid";
-import { Inventory } from "../../../interfaces/Inventory";
 import { useNavigate } from "react-router-dom";
 
-interface RenderActionsProps {
-  item: Inventory;
+interface InventoryLogActionsProps {
+  id: number;
 }
 
-const RenderActions: React.FC<RenderActionsProps> = ({ item }) => {
+const InventoryLogActions: React.FC<InventoryLogActionsProps> = ({
+  id,
+}): JSX.Element => {
   const navigate = useNavigate();
 
   return (
@@ -18,7 +18,7 @@ const RenderActions: React.FC<RenderActionsProps> = ({ item }) => {
         size="sm"
         color="primary"
         variant="flat"
-        onPress={() => navigate(`/inventario/${item.id}`)}
+        onPress={() => navigate(`/inventario_log/${id}`)}
         aria-label="Ver detalles"
       >
         <EyeIcon height={18} />
@@ -27,4 +27,4 @@ const RenderActions: React.FC<RenderActionsProps> = ({ item }) => {
   );
 };
 
-export default RenderActions;
+export default InventoryLogActions;

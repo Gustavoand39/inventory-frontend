@@ -3,16 +3,16 @@ import { Button, Spinner } from "@nextui-org/react";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { useParams } from "react-router-dom";
 
-import RenderState from "../../../components/Inventory/RenderState";
-import { Inventory } from "../../../interfaces/Inventory";
-import { getInventoryById } from "../../../services/inventoryService";
+import RenderState from "../../../components/InventoryLog/RenderState";
+import { InventoryLog } from "../../../interfaces/InventoryLog";
+import { getInventoryById } from "../../../services/inventoryLogService";
 
-const InventoryDetails = () => {
-  const [data, setData] = useState<Inventory>({} as Inventory);
+const InventoryLogDetails = () => {
+  const [data, setData] = useState<InventoryLog>({} as InventoryLog);
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    getInventoryById(Number(id), (responseData: Inventory) => {
+    getInventoryById(Number(id), (responseData: InventoryLog) => {
       const parsedData = {
         ...responseData,
         newState: JSON.parse(responseData.newState as unknown as string),
@@ -77,4 +77,4 @@ const InventoryDetails = () => {
   );
 };
 
-export default InventoryDetails;
+export default InventoryLogDetails;

@@ -1,7 +1,7 @@
-import { Inventory } from "../interfaces/Inventory";
+import { InventoryLog } from "../interfaces/InventoryLog";
 import { IColumn } from "../interfaces/Table";
 
-export const inititalLastInventoryColumns: IColumn<Inventory>[] = [
+export const recentInventoryLogCols: IColumn<InventoryLog>[] = [
   { key: "id", label: "Identificador", visible: true },
   { key: "product", label: "Producto", visible: true },
   { key: "user", label: "Usuario", visible: true },
@@ -10,7 +10,7 @@ export const inititalLastInventoryColumns: IColumn<Inventory>[] = [
     key: "date",
     label: "Fecha",
     visible: true,
-    renderCell: (row: Inventory) => new Date(row.date).toLocaleDateString(),
+    renderCell: (row: InventoryLog) => new Date(row.date).toLocaleString(),
   },
   { key: "actions", label: "Acciones", visible: true },
 ];

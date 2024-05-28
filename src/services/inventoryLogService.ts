@@ -2,16 +2,16 @@ import { toast } from "sonner";
 
 import api from "../api/axiosConfig";
 import {
-  Inventory,
+  InventoryLog,
   InventoryListResponse,
   InventoryResponse,
-} from "../interfaces/Inventory";
+} from "../interfaces/InventoryLog";
 import handleAxiosError from "../helpers/handleAxiosError";
 
 interface IGetInventoryProps {
   page: number;
   limit: number;
-  setInventory: (inventory: Inventory[]) => void;
+  setInventory: (inventory: InventoryLog[]) => void;
   setTotalInventory: (total: number) => void;
   setTotalPages: (total: number) => void;
 }
@@ -45,7 +45,7 @@ export const getListInventory = async ({
 };
 
 export const getLastInventory = async (
-  setInventory: (item: Inventory[]) => void
+  setInventory: (item: InventoryLog[]) => void
 ): Promise<void> => {
   try {
     const { data } = await api.get<InventoryListResponse>("inventory/last");
@@ -64,7 +64,7 @@ export const getLastInventory = async (
 
 export const getInventoryById = async (
   id: number,
-  setInventory: (item: Inventory) => void
+  setInventory: (item: InventoryLog) => void
 ): Promise<void> => {
   try {
     const { data } = await api.get<InventoryResponse>(`inventory/${id}`);

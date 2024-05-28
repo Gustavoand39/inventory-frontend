@@ -7,9 +7,9 @@ const Dashboard = React.lazy(() => import("../pages/Dashboard"));
 const Products = React.lazy(() => import("../pages/Products"));
 const Categories = React.lazy(() => import("../pages/Categories"));
 const Users = React.lazy(() => import("../pages/Users"));
-const Inventory = React.lazy(() => import("../pages/Inventory"));
-const InventoryDetails = React.lazy(
-  () => import("../pages/Inventory/Inventory/InventoryDetails")
+const Inventory = React.lazy(() => import("../pages/InventoryLog"));
+const InventoryLogDetails = React.lazy(
+  () => import("../pages/InventoryLog/InventoryLogDetails/InventoryLogDetails")
 );
 
 interface IRoute {
@@ -47,8 +47,8 @@ const SecureRoutes: React.FC<IRoute> = () => {
           element: <LoadComponent component={Inventory} />,
         },
         {
-          path: "inventario/:id",
-          element: <LoadComponent component={InventoryDetails} />,
+          path: "inventario_log/:id",
+          element: <LoadComponent component={InventoryLogDetails} />,
         },
       ],
     },

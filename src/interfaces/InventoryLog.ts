@@ -11,7 +11,7 @@ export interface InventoryState {
   createdAt: string;
   updatedAt: string;
 }
-export interface Inventory {
+export interface InventoryLog {
   id: number;
   product: string;
   user: string;
@@ -22,9 +22,9 @@ export interface Inventory {
 }
 
 export interface InventoryListResponse extends IPaginatedResponse {
-  data: Inventory[];
+  data: InventoryLog[];
 }
 
 export interface InventoryResponse extends IApiResponse {
-  data: Inventory;
+  data: InventoryLog;
 }

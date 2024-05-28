@@ -1,12 +1,12 @@
 import LowProducts from "./products/LowProducts";
-import RecentInventory from "./inventory/RecentInventory";
+import RecentInventoryLog from "./inventoryLog/RecentInventoryLog";
 
 const Dashboard = () => {
   return (
     <>
       <LowProducts />
 
-      <RecentInventory />
+      <RecentInventoryLog />
     </>
   );
 };
