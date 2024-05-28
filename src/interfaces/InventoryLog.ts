@@ -17,8 +17,8 @@ export interface InventoryLog {
   user: string;
   details: string;
   date: string;
-  newState: InventoryState;
-  oldState: InventoryState;
+  newState?: InventoryState;
+  oldState?: InventoryState;
 }
 
 export interface InventoryListResponse extends IPaginatedResponse {

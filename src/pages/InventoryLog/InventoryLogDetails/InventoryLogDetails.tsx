@@ -63,13 +63,13 @@ const InventoryLogDetails = () => {
             <p className="text-lg font-semibold text-gray-800 mb-2">
               Nuevo estado:
             </p>
-            {RenderState(data.newState)}
+            {data.newState ? RenderState(data.newState) : "N/A"}
           </div>
           <div>
             <p className="text-lg font-semibold text-gray-800 mb-2">
               Estado anterior:
             </p>
-            {RenderState(data.oldState)}
+            {data.oldState ? RenderState(data.oldState) : "N/A"}
           </div>
         </div>
       </div>
