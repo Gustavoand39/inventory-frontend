@@ -27,8 +27,8 @@ const InventoryLogDetails = () => {
   return (
     <>
       <Button
-        color="primary"
-        variant="flat"
+        color="default"
+        variant="light"
         size="md"
         className="mb-4 font-semibold"
         startContent={<ArrowLeftIcon height={20} />}
@@ -37,36 +37,44 @@ const InventoryLogDetails = () => {
         Regresar
       </Button>
 
-      <div className="rounded-xl bg-white shadow-md p-6">
-        <p className="text-lg font-bold mb-2">Detalles del Producto</p>
+      <div className="rounded-xl bg-white shadow-md dark:bg-neutral-900 p-6">
+        <p className="text-lg font-semibold mb-2">Detalles del Producto</p>
         <div className="mb-4">
-          <p className="text-sm text-gray-600">
-            <span className="font-semibold text-gray-800">Producto:</span>{" "}
+          <p className="text-gray-600 dark:text-gray-200">
+            <span className="font-semibold text-gray-800 dark:text-gray-400">
+              Producto:
+            </span>{" "}
             {data.product}
           </p>
-          <p className="text-sm text-gray-600">
-            <span className="font-semibold text-gray-800">Usuario:</span>{" "}
+          <p className="text-gray-600 dark:text-gray-200">
+            <span className="font-semibold text-gray-800 dark:text-gray-400">
+              Usuario:
+            </span>{" "}
             {data.user}
           </p>
-          <p className="text-sm text-gray-600">
-            <span className="font-semibold text-gray-800">Detalles:</span>{" "}
+          <p className="text-gray-600 dark:text-gray-200">
+            <span className="font-semibold text-gray-800 dark:text-gray-400">
+              Detalles:
+            </span>{" "}
             {data.details}
           </p>
-          <p className="text-sm text-gray-600">
-            <span className="font-semibold text-gray-800">Fecha:</span>{" "}
+          <p className="text-gray-600 dark:text-gray-200">
+            <span className="font-semibold text-gray-800 dark:text-gray-400">
+              Fecha:
+            </span>{" "}
             {new Date(data.date).toLocaleString()}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <p className="text-lg font-semibold text-gray-800 mb-2">
+            <p className="text-lg font-semibold text-gray-800 dark:text-gray-300 mb-2">
               Nuevo estado:
             </p>
             {data.newState ? RenderState(data.newState) : "N/A"}
           </div>
           <div>
-            <p className="text-lg font-semibold text-gray-800 mb-2">
+            <p className="text-lg font-semibold text-gray-800 dark:text-gray-300 mb-2">
               Estado anterior:
             </p>
             {data.oldState ? RenderState(data.oldState) : "N/A"}

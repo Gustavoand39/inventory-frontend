@@ -1,30 +1,35 @@
 import { InventoryState } from "../../interfaces/InventoryLog";
 
 const RenderState: React.FC<InventoryState> = (state): JSX.Element => (
-  <div className="p-4 bg-gray-100 rounded-md mb-4">
+  <div className="p-4 bg-gray-100 dark:bg-neutral-800 rounded-md mb-4">
     <p>
-      <strong>ID:</strong> {state.id}
+      <strong className="dark:text-gray-300">ID:</strong> {state.id}
     </p>
     <p>
-      <strong>Nombre:</strong> {state.name}
+      <strong className="dark:text-gray-300">Nombre:</strong> {state.name}
     </p>
     <p>
-      <strong>Descripción:</strong> {state.description}
+      <strong className="dark:text-gray-300">Descripción:</strong>{" "}
+      {state.description}
     </p>
     <p>
-      <strong>Stock:</strong> {state.stock}
+      <strong className="dark:text-gray-300">Stock:</strong> {state.stock}
     </p>
     <p>
-      <strong>Stock Mínimo:</strong> {state.minStock}
+      <strong className="dark:text-gray-300">Stock Mínimo:</strong>{" "}
+      {state.minStock}
     </p>
     <p>
-      <strong>Categoría ID:</strong> {state.categoryId}
+      <strong className="dark:text-gray-300">Categoría ID:</strong>{" "}
+      {state.categoryId}
     </p>
     <p>
-      <strong>Creado:</strong> {new Date(state.createdAt).toLocaleString()}
+      <strong className="dark:text-gray-300">Creado:</strong>{" "}
+      {new Date(state.createdAt).toLocaleString()}
     </p>
     <p>
-      <strong>Actualizado:</strong> {new Date(state.updatedAt).toLocaleString()}
+      <strong className="dark:text-gray-300">Actualizado:</strong>{" "}
+      {new Date(state.updatedAt).toLocaleString()}
     </p>
   </div>
 );
