@@ -3,6 +3,7 @@ import CustomTable from "../../../components/ui/Table/CustomTable";
 import { getLastInventory } from "../../../services/inventoryService";
 import { Inventory } from "../../../interfaces/Inventory";
 import { inititalLastInventoryColumns } from "../../../constants/initialStateInventory";
+import InventoryActions from "../../../components/Inventory/Table/RenderActions";
 
 const RecentInventory = () => {
   const [inventory, setInventory] = useState<Inventory[]>([]);
@@ -18,6 +19,7 @@ const RecentInventory = () => {
         aria="Inventario reciente"
         columns={inititalLastInventoryColumns}
         data={inventory}
+        renderActions={(item) => <InventoryActions item={item} />}
       />
     </>
   );
