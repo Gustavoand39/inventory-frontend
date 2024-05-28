@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import CategoryTable from "../../../components/ui/Table/CustomTable";
 import CategoryHeader from "../../../components/ui/Table/CustomTableHeader";
-import CategoryFootter from "../../../components/ui/Table/CustomTableFooter";
+import CategoryFooter from "../../../components/ui/Table/CustomTableFooter";
 import CategoryForm from "../../../components/category/Modal/CategoryForm";
 import CategoryActions from "../../../components/category/table/RenderActions";
 import CustomModal from "../../../components/ui/Modal/CustomModal";
@@ -169,7 +169,7 @@ const ListCategories = () => {
           />
         }
         bottomContent={
-          <CategoryFootter page={page} total={totalPages} callback={setPage} />
+          <CategoryFooter page={page} total={totalPages} callback={setPage} />
         }
         renderActions={(item: ICategory) => {
           return (

@@ -11,16 +11,16 @@ import handleAxiosError from "../helpers/handleAxiosError";
 interface IGetInventoryProps {
   page: number;
   limit: number;
-  setInventory: (inventory: InventoryLog[]) => void;
-  setTotalInventory: (total: number) => void;
+  setInventoryLog: (inventory: InventoryLog[]) => void;
+  setTotalInventoryLog: (total: number) => void;
   setTotalPages: (total: number) => void;
 }
 
 export const getListInventory = async ({
   page,
   limit,
-  setInventory,
-  setTotalInventory,
+  setInventoryLog,
+  setTotalInventoryLog,
   setTotalPages,
 }: IGetInventoryProps): Promise<void> => {
   try {
@@ -33,9 +33,10 @@ export const getListInventory = async ({
       return;
     }
 
+    console.log(data);
     if (data.totalItems && data.totalPages) {
-      setInventory(data.data);
-      setTotalInventory(data.totalItems);
+      setInventoryLog(data.data);
+      setTotalInventoryLog(data.totalItems);
       setTotalPages(data.totalPages);
     }
   } catch (error) {
@@ -75,6 +76,39 @@ export const getInventoryById = async (
     }
 
     setInventory(data.data);
+  } catch (error) {
+    const resp = handleAxiosError(error);
+    toast.error(resp.message);
+  }
+};
+
+interface ICreateInventoryProps extends IGetInventoryProps {
+  word: string;
+}
+
+export const getSearchInventory = async ({
+  word,
+  page,
+  limit,
+  setInventoryLog,
+  setTotalInventoryLog,
+  setTotalPages,
+}: ICreateInventoryProps): Promise<void> => {
+  try {
+    const { data } = await api.get<InventoryListResponse>("inventory/search/", {
+      params: { word, page, limit },
+    });
+
+    if (data.error) {
+      toast.error(data.message);
+      return;
+    }
+
+    if (data.totalItems && data.totalPages) {
+      setInventoryLog(data.data);
+      setTotalInventoryLog(data.totalItems);
+      setTotalPages(data.totalPages);
+    }
   } catch (error) {
     const resp = handleAxiosError(error);
     toast.error(resp.message);

@@ -1,9 +1,9 @@
-const Inventory = () => {
-  return (
-    <>
-      <h1>Inventory</h1>
-    </>
-  );
-};
+import InventoryLogList from "./InventoryLogList/InventoryLogList"
 
-export default Inventory;
+const index = () => {
+  return (
+    <InventoryLogList />
+  )
+}
+
+export default index

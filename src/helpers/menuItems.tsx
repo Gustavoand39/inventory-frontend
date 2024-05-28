@@ -41,7 +41,7 @@ const menuItems: MenuItem[] = [
   {
     title: "Inventario",
     key: "inventory",
-    url: "/inventario",
+    url: "/inventario_log",
     iconChild: <InboxStackIcon height={24} />,
   },
 ];

@@ -43,7 +43,7 @@ const SecureRoutes: React.FC<IRoute> = () => {
         },
         { path: "usuarios", element: <LoadComponent component={Users} /> },
         {
-          path: "inventario",
+          path: "inventario_log",
           element: <LoadComponent component={Inventory} />,
         },
         {

@@ -14,3 +14,29 @@ export const recentInventoryLogCols: IColumn<InventoryLog>[] = [
   },
   { key: "actions", label: "Acciones", visible: true },
 ];
+
+export const initialInventoryLogCols: IColumn<InventoryLog>[] = [
+  { key: "id", label: "Identificador", visible: true },
+  { key: "product", label: "Producto", visible: true },
+  { key: "user", label: "Usuario", visible: true },
+  { key: "details", label: "Detalles", visible: true },
+  {
+    key: "date",
+    label: "Fecha",
+    visible: true,
+    renderCell: (row: InventoryLog) => new Date(row.date).toLocaleString(),
+  },
+  {
+    key: "newState",
+    label: "Nuevo Estado",
+    visible: true,
+    renderCell: (row: InventoryLog) => row.newState.name,
+  },
+  {
+    key: "oldState",
+    label: "Estado Anterior",
+    visible: true,
+    renderCell: (row: InventoryLog) => row.oldState.name,
+  },
+  { key: "actions", label: "Acciones", visible: true },
+];
