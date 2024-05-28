@@ -16,7 +16,7 @@ const LowProducts = () => {
         Productos con pocas existencias
       </h2>
 
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 overflow-x-auto p-4">
+      <div className="grid gap-4 grid-cols-2 md:grid-cols-4 lg:grid-cols-6 overflow-x-auto p-4">
         {products.map((item) => (
           <ProductCard key={item.id} item={item} />
         ))}

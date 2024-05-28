@@ -16,7 +16,7 @@ const Sidebar = () => {
         <p className="font-bold text-inherit hidden group-hover:flex">ACME</p>
       </Link>
 
-      <ul className="w-full my-4">
+      <ul className="w-full flex flex-col gap-2 my-4">
         {menuItems.map((item) => (
           <Link key={item.key} to={item.url}>
             <li
