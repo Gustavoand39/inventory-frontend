@@ -45,7 +45,7 @@ export const getListInventory = async ({
 };
 
 export const getLastInventory = async (
-  setInventory: (item: InventoryLog[]) => void
+  setInventoryLog: (item: InventoryLog[]) => void
 ): Promise<void> => {
   try {
     const { data } = await api.get<InventoryListResponse>("inventory/last");
@@ -55,7 +55,7 @@ export const getLastInventory = async (
       return;
     }
 
-    setInventory(data.data);
+    setInventoryLog(data.data);
   } catch (error) {
     const resp = handleAxiosError(error);
     toast.error(resp.message);

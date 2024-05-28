@@ -8,21 +8,21 @@ import { getLastInventory } from "../../../services/inventoryLogService";
 import { recentInventoryLogCols } from "../../../constants/initialStateInventoryLog";
 
 const RecentInventoryLog = () => {
-  const [inventory, setInventory] = useState<InventoryLog[]>([]);
+  const [inventoryLog, setInventoryLog] = useState<InventoryLog[]>([]);
 
   useEffect(() => {
-    getLastInventory(setInventory);
+    getLastInventory(setInventoryLog);
   }, []);
 
   return (
     <>
       <h2 className="text-2xl font-bold my-4">
-        Registros de inventarios recientes
+        Registro de inventarios recientes
       </h2>
       <CustomTable
-        aria="Inventario reciente"
+        aria="Registro de Inventarios reciente"
         columns={recentInventoryLogCols}
-        data={inventory}
+        data={inventoryLog}
         renderActions={(item) => <InventoryLogActions id={item.id} />}
       />
     </>
