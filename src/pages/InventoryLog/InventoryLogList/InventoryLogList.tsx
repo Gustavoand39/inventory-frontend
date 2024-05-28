@@ -82,6 +82,7 @@ const InventoryLogList = () => {
             setRowsPerPage={setRowsPerPage}
             setPage={setPage}
             searchCallback={searchInventoryLog}
+            newButton={false}
           />
         }
         bottomContent={

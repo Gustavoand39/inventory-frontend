@@ -23,6 +23,7 @@ interface ICustomTableHeader {
   setRowsPerPage?: (rowsPerPage: number) => void;
   setPage?: (page: number) => void;
   searchCallback?: (search: string) => void;
+  newButton?: boolean;
 }
 
 /**
@@ -36,6 +37,7 @@ interface ICustomTableHeader {
  * @param {(rowsPerPage: number) => void} [props.setRowsPerPage] Función para cambiar la cantidad de filas por página
  * @param {(page: number) => void} [props.setPage] Función para cambiar la página actual
  * @param {(search: string) => void} [props.searchCallback] Función para buscar registros
+ * @param {boolean} [props.newButton] Indica si se debe mostrar el botón de nuevo registro
  * @returns {JSX.Element} Elemento JSX
  */
 const CustomTableHeader = ({
@@ -46,6 +48,7 @@ const CustomTableHeader = ({
   setRowsPerPage,
   setPage,
   searchCallback,
+  newButton = true,
 }: ICustomTableHeader) => {
   const [visibleColumns, setVisibleColumns] = useState<string[]>([]);
 
@@ -128,13 +131,15 @@ const CustomTableHeader = ({
             </DropdownMenu>
           </Dropdown>
 
-          <Button
-            color="primary"
-            endContent={<PlusIcon height={20} />}
-            onClick={openCreateModal}
-          >
-            Agregar
-          </Button>
+          {newButton && (
+            <Button
+              color="primary"
+              endContent={<PlusIcon height={20} />}
+              onClick={openCreateModal}
+            >
+              Agregar
+            </Button>
+          )}
         </div>
       </div>
 
