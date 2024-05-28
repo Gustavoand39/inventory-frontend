@@ -11,7 +11,7 @@ const LowProducts = () => {
   }, []);
 
   return products.length > 0 ? (
-    <section className="rounded-2xl">
+    <section className="rounded-2xl mb-4">
       <h2 className="text-2xl font-bold my-2">
         Productos con pocas existencias
       </h2>
