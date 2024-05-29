@@ -6,8 +6,12 @@ export const login = async (
   username: string,
   password: string
 ): Promise<IAuthResponse> => {
-  const { data } = await api.post("auth/login", { username, password });
-  return data as IAuthResponse;
+  const { data } = await api.post<IAuthResponse>("auth/login", {
+    username,
+    password,
+  });
+
+  return data;
 };
 
 export const refreshToken = async (token: string): Promise<IAuthResponse> => {

@@ -10,6 +10,7 @@ import {
   initialAuthContext,
 } from "../constants/inititalStateAuth";
 import { IAuth, IAuthContext } from "../interfaces/AuthContext";
+import handleAxiosError from "../helpers/handleAxiosError";
 
 interface IChildren {
   children: ReactNode;
@@ -25,42 +26,59 @@ export const AuthProvider: React.FC<IChildren> = ({ children }) => {
     username: string,
     password: string
   ): Promise<boolean> => {
-    const resp = await loginUser(username, password);
+    try {
+      const resp = await loginUser(username, password);
 
-    sessionStorage.setItem("token", resp.token);
+      if (resp.error) {
+        toast.error(resp.message);
+        return resp.error;
+      }
 
-    setAuth({
-      isAuth: true,
-      isCheckAuth: false,
-      uid: resp.data.id,
-      username: resp.data.username,
-    });
+      sessionStorage.setItem("token", resp.token);
 
-    return resp.error;
+      setAuth({
+        isAuth: true,
+        isCheckAuth: false,
+        uid: resp.data.id,
+        username: resp.data.username,
+      });
+
+      return resp.error;
+    } catch (error) {
+      const err = handleAxiosError(error);
+      toast.error(err.message);
+      return false;
+    }
   };
 
   const refreshToken = useCallback(async (): Promise<void> => {
-    const token = sessionStorage.getItem("token");
+    try {
+      const token = sessionStorage.getItem("token");
 
-    if (!token) return logout();
+      if (!token) return logout();
 
-    const resp = await refreshUser(token);
+      const resp = await refreshUser(token);
 
-    if (resp.error) {
-      toast.error(resp.message);
-      return logout();
+      if (resp.error) {
+        toast.error(resp.message);
+        return logout();
+      }
+
+      const { id, username } = resp.data;
+
+      setAuth({
+        isAuth: true,
+        isCheckAuth: false,
+        uid: id,
+        username: username,
+      });
+
+      sessionStorage.setItem("token", resp.token);
+    } catch (error) {
+      const err = handleAxiosError(error);
+      toast.error(err.message);
+      logout();
     }
-
-    const { id, username } = resp.data;
-
-    setAuth({
-      isAuth: true,
-      isCheckAuth: false,
-      uid: id,
-      username: username,
-    });
-
-    sessionStorage.setItem("token", resp.token);
   }, []);
 
   const logout = (): void => {
