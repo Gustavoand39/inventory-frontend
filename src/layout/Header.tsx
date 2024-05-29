@@ -1,33 +1,30 @@
-import { useContext, useState } from "react";
+// Header.tsx
+
+import { useCallback, useContext, useState } from "react";
 import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Button,
   Avatar,
 } from "@nextui-org/react";
 import {
   ArrowLeftEndOnRectangleIcon as Logout,
   UserIcon as User,
-  MoonIcon as Dark,
-  SunIcon as Light,
-  ComputerDesktopIcon as System,
   Bars3Icon as Menu,
   XMarkIcon as CloseMenu,
 } from "@heroicons/react/24/solid";
-
 import { AuthContext } from "../context/AuthContext";
 import Brand from "../components/layout/Brand";
-import useTheme from "../hooks/useTheme";
+import ThemeSelector from "../components/layout/ThemeSelector";
 
 const Header: React.FC = () => {
-  const [isOpenTheme, setIsOpenTheme] = useState<boolean>(false);
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { auth, logout } = useContext(AuthContext);
-  const { theme, toggleTheme } = useTheme();
 
-  const handleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const handleMenu = useCallback(() => {
+    setIsMenuOpen((prevState) => !prevState);
+  }, []);
 
   return (
     <header
@@ -42,69 +39,7 @@ const Header: React.FC = () => {
       </div>
 
       <div className="flex gap-4">
-        <Button
-          isIconOnly
-          variant="light"
-          className="focus:bg-slate-200 focus:ring-2 focus:ring-gray-200 dark:focus:bg-neutral-600 dark:focus:ring-neutral-600"
-          onClick={() => {
-            setIsOpenTheme(!isOpenTheme);
-          }}
-          aria-label="Cambiar tema"
-        >
-          {
-            {
-              system: <System height={24} />,
-              light: <Light height={24} />,
-              dark: <Dark height={24} />,
-            }[theme]
-          }
-        </Button>
-
-        <div
-          className={`w-40 absolute top-20 right-12 flex flex-col items-start rounded-lg border border-gray-200 shadow-md p-1 
-          bg-white dark:bg-neutral-900 dark:border-neutral-800 dark:shadow-neutral-950 ${
-            isOpenTheme ? "group-active:flex" : "hidden"
-          }`}
-        >
-          <Button
-            variant="light"
-            className="w-full flex justify-start font-semibold"
-            startContent={<System height={24} />}
-            onClick={() => {
-              toggleTheme("system");
-              setIsOpenTheme(false);
-            }}
-            aria-label="Tema del sistema"
-          >
-            Sistema
-          </Button>
-
-          <Button
-            variant="light"
-            className="w-full justify-start font-semibold"
-            startContent={<Light height={24} />}
-            onClick={() => {
-              toggleTheme("light");
-              setIsOpenTheme(false);
-            }}
-            aria-label="Tema claro"
-          >
-            Claro
-          </Button>
-
-          <Button
-            variant="light"
-            className="w-full justify-start font-semibold"
-            startContent={<Dark height={24} />}
-            onClick={() => {
-              toggleTheme("dark");
-              setIsOpenTheme(false);
-            }}
-            aria-label="Tema oscuro"
-          >
-            Oscuro
-          </Button>
-        </div>
+        <ThemeSelector />
 
         <Dropdown placement="bottom-end">
           <DropdownTrigger className="cursor-pointer">

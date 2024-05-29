@@ -12,11 +12,10 @@ const ProductCard = ({ item }: IProductCard) => {
       isPressable
       key={item.id}
       shadow="none"
-      className="border border-neutral-400 rounded-lg bg-white hover:shadow-lg transition duration-300 ease-in-out
-      dark:bg-neutral-800 dark:hover:border-neutral-100"
-      onPress={() => console.log("item pressed")}
+      className="border border-neutral-200 rounded-lg bg-white hover:shadow-lg transition duration-300 ease-in-out
+      dark:bg-neutral-900 dark:border-neutral-800 dark:hover:border-neutral-700"
     >
-      <CardHeader className="flex gap-3">
+      <CardHeader className="w-full flex gap-3">
         <ExclamationCircleIcon className="text-red-500" height={28} />
 
         <div className="flex flex-col items-start">
