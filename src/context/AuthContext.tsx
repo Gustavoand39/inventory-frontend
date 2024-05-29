@@ -1,18 +1,24 @@
-import { ReactNode, useCallback, useState } from "react";
+import { createContext, ReactNode, useCallback, useState } from "react";
 import { toast } from "sonner";
 
-import { initialAuthState, AuthContext } from "./AuthContext";
-import { IAuth } from "../interfaces/AuthContext";
 import {
   login as loginUser,
   refreshToken as refreshUser,
 } from "../services/authService";
+import {
+  initialAuthState,
+  initialAuthContext,
+} from "../constants/inititalStateAuth";
+import { IAuth, IAuthContext } from "../interfaces/AuthContext";
 
 interface IChildren {
   children: ReactNode;
 }
 
-const AuthProvider: React.FC<IChildren> = ({ children }) => {
+// Crear el contexto de autenticación
+export const AuthContext = createContext<IAuthContext>(initialAuthContext);
+
+export const AuthProvider: React.FC<IChildren> = ({ children }) => {
   const [auth, setAuth] = useState<IAuth>(initialAuthState);
 
   const login = async (
@@ -71,5 +77,3 @@ const AuthProvider: React.FC<IChildren> = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
-export default AuthProvider;

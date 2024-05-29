@@ -4,7 +4,7 @@ import { NextUIProvider } from "@nextui-org/react";
 import { Toaster } from "sonner";
 
 import { ThemeProvider } from "./context/ThemeContext";
-import AuthProvider from "./context/AuthProvider";
+import { AuthProvider } from "./context/AuthContext";
 import Router from "./routes/AppRouter";
 
 import "./index.css";
