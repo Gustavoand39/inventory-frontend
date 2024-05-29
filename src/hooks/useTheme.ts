@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 
-interface IThemeReturn {
+export interface IThemeReturn {
   theme: Theme;
   toggleTheme: (theme: Theme) => void;
 }
 
-type Theme = "system" | "dark" | "light";
+export type Theme = "system" | "dark" | "light";
 
 /**
  * Retorna el tema guardado en el localStorage si existe,
@@ -35,11 +35,7 @@ const useTheme = (): IThemeReturn => {
     const classList = document.body.classList;
     const darkClasses = ["dark", "text-foreground", "bg-background"];
 
-    if (isDark) {
-      classList.add(...darkClasses);
-    } else {
-      classList.remove(...darkClasses);
-    }
+    isDark ? classList.add(...darkClasses) : classList.remove(...darkClasses);
   };
 
   /**
