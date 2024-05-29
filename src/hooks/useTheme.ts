@@ -1,11 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-
-export interface IThemeReturn {
-  theme: Theme;
-  toggleTheme: (theme: Theme) => void;
-}
-
-export type Theme = "system" | "dark" | "light";
+import { Theme, IThemeReturn } from "../interfaces/ThemeContext";
 
 /**
  * Retorna el tema guardado en el localStorage si existe,
