@@ -32,8 +32,8 @@ export const AuthProvider: React.FC<IChildren> = ({ children }) => {
     setAuth({
       isAuth: true,
       isCheckAuth: false,
-      uid: resp.user.id,
-      username: resp.user.username,
+      uid: resp.data.id,
+      username: resp.data.username,
     });
 
     return resp.error;
@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<IChildren> = ({ children }) => {
       return logout();
     }
 
-    const { id, username } = resp.user;
+    const { id, username } = resp.data;
 
     setAuth({
       isAuth: true,

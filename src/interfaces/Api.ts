@@ -11,5 +11,5 @@ export interface IPaginatedResponse extends IApiResponse {
 
 export interface IAuthResponse extends IApiResponse {
   token: string;
-  user: IUserAuth;
+  data: IUserAuth;
 }
