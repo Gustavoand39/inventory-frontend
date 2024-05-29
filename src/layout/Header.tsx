@@ -25,9 +25,10 @@ type ThemeIconProps = {
 };
 
 const Header: React.FC = () => {
+  const [isOpenTheme, setIsOpenTheme] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const { auth, logout } = useContext(AuthContext);
-  const { isDarkMode, toggleTheme } = useTheme();
+  const { toggleTheme } = useTheme();
 
   const handleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -47,11 +48,52 @@ const Header: React.FC = () => {
         <Button
           isIconOnly
           variant="light"
-          onClick={toggleTheme}
+          onClick={() => {
+            setIsOpenTheme(!isOpenTheme);
+          }}
+          className="group"
           aria-label="Cambiar tema"
         >
-          <ThemeIcon isDarkMode={isDarkMode} />
+          <ThemeIcon isDarkMode={true} />
         </Button>
+
+        <div className={isOpenTheme ? "group-active:flex" : "hidden"}>
+          <Button
+            variant="light"
+            onClick={() => {
+              toggleTheme("system");
+              setIsOpenTheme(false);
+            }}
+            className="group"
+            aria-label="Tema del sistema"
+          >
+            Sistema
+          </Button>
+
+          <Button
+            variant="light"
+            onClick={() => {
+              toggleTheme("light");
+              setIsOpenTheme(false);
+            }}
+            className="group"
+            aria-label="Tema claro"
+          >
+            Claro
+          </Button>
+
+          <Button
+            variant="light"
+            onClick={() => {
+              toggleTheme("dark");
+              setIsOpenTheme(false);
+            }}
+            className="group"
+            aria-label="Tema oscuro"
+          >
+            Oscuro
+          </Button>
+        </div>
 
         <Dropdown placement="bottom-end">
           <DropdownTrigger className="cursor-pointer">
