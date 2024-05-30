@@ -1,6 +1,4 @@
-// Header.tsx
-
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext } from "react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -18,13 +16,17 @@ import { AuthContext } from "../context/AuthContext";
 import Brand from "../components/layout/Brand";
 import ThemeSelector from "../components/layout/ThemeSelector";
 
-const Header: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+interface HeaderProps {
+  isMenuOpen: boolean;
+  setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
   const { auth, logout } = useContext(AuthContext);
 
   const handleMenu = useCallback(() => {
     setIsMenuOpen((prevState) => !prevState);
-  }, []);
+  }, [setIsMenuOpen]);
 
   return (
     <header
@@ -42,7 +44,7 @@ const Header: React.FC = () => {
         <ThemeSelector />
 
         <Dropdown placement="bottom-end">
-          <DropdownTrigger className="cursor-pointer">
+          <DropdownTrigger className="hidden md:flex cursor-pointer">
             <Avatar
               icon={<User height={24} />}
               classNames={{
