@@ -99,7 +99,6 @@ const ListUsers = () => {
   const openEditModal = async (id: number) => {
     setIsEditOpen(true);
     const user = await getUser(id);
-    console.log(user);
     setFormValue(user);
   };
 

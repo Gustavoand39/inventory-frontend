@@ -33,7 +33,6 @@ export const getListInventory = async ({
       return;
     }
 
-    console.log(data);
     if (data.totalItems && data.totalPages) {
       setInventoryLog(data.data);
       setTotalInventoryLog(data.totalItems);
@@ -69,7 +68,7 @@ export const getInventoryById = async (
 ): Promise<void> => {
   try {
     const { data } = await api.get<InventoryResponse>(`inventory/${id}`);
-    console.log(data);
+
     if (data.error) {
       toast.error(data.message);
       return;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@nextui-org/react";
 import {
   MoonIcon as Dark,
@@ -8,17 +8,34 @@ import {
 import useTheme from "../../hooks/useTheme";
 import { Theme } from "../../interfaces/ThemeContext";
 
-const ThemeSelector: React.FC = () => {
+const ThemeSelector = (): JSX.Element => {
   const { theme, toggleTheme } = useTheme();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleClick = (selectedTheme: Theme) => {
     toggleTheme(selectedTheme);
     setIsOpen(false);
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      containerRef.current &&
+      !containerRef.current.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <>
+    <div ref={containerRef}>
       <Button
         isIconOnly
         variant="light"
@@ -36,8 +53,8 @@ const ThemeSelector: React.FC = () => {
 
       <div
         className={`w-40 absolute top-20 right-12 flex flex-col items-start rounded-lg border border-gray-200 shadow-md p-1 
-          bg-white dark:bg-neutral-900 dark:border-neutral-800 dark:shadow-neutral-950 ${
-            isOpen ? "group-active:flex" : "hidden"
+          bg-white dark:bg-neutral-900 dark:border-neutral-700 dark:shadow-neutral-950 ${
+            isOpen ? "flex" : "hidden"
           }`}
       >
         <Button
@@ -48,9 +65,7 @@ const ThemeSelector: React.FC = () => {
               : ""
           }`}
           startContent={<System height={24} />}
-          onClick={() => {
-            handleClick("system");
-          }}
+          onClick={() => handleClick("system")}
           aria-label="Tema del sistema"
         >
           Sistema
@@ -62,9 +77,7 @@ const ThemeSelector: React.FC = () => {
             theme === "light" ? "text-teal-500 bg-gray-100" : ""
           }`}
           startContent={<Light height={24} />}
-          onClick={() => {
-            handleClick("light");
-          }}
+          onClick={() => handleClick("light")}
           aria-label="Tema claro"
         >
           Claro
@@ -76,15 +89,13 @@ const ThemeSelector: React.FC = () => {
             theme === "dark" ? "text-teal-300 bg-teal-950" : ""
           }`}
           startContent={<Dark height={24} />}
-          onClick={() => {
-            handleClick("dark");
-          }}
+          onClick={() => handleClick("dark")}
           aria-label="Tema oscuro"
         >
           Oscuro
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 
