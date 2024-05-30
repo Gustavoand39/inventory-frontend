@@ -90,11 +90,11 @@ const ProductList = () => {
   const openCreateProductModal = () => setIsCreateOpen(true);
 
   const handleCreateProduct = async () => {
-    setIsCreateOpen(false);
     const success = await createProduct(values as IProduct, image);
     if (success) {
       fetchProducts();
       clearStates();
+      setIsCreateOpen(false);
     }
   };
 
@@ -110,11 +110,11 @@ const ProductList = () => {
   };
 
   const handleEditProduct = async () => {
-    setIsEditOpen(false);
     const success = await updateProduct(values as IProduct, image);
     if (success) {
       fetchProducts();
       clearStates();
+      setIsEditOpen(false);
     }
   };
 

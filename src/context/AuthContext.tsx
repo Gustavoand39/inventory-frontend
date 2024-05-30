@@ -53,11 +53,7 @@ export const AuthProvider: React.FC<IChildren> = ({ children }) => {
 
   const refreshToken = useCallback(async (): Promise<void> => {
     try {
-      const token = sessionStorage.getItem("token");
-
-      if (!token) return logout();
-
-      const resp = await refreshUser(token);
+      const resp = await refreshUser();
 
       if (resp.error) {
         toast.error(resp.message);

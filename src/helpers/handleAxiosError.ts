@@ -6,7 +6,10 @@ const handleAxiosError = (error: unknown) => {
 
     return {
       error: true,
-      message: data?.message || `Error desconocido: ${error.response.status}`,
+      message:
+        data?.message ||
+        data?.errors[0].msg ||
+        `Error desconocido: ${error.response.status}`,
     };
   }
 

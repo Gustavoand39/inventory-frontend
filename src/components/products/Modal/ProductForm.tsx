@@ -53,6 +53,7 @@ const ProductForm = ({
   return (
     <>
       <Input
+        isRequired
         autoFocus
         name="name"
         label="Nombre"
@@ -75,6 +76,7 @@ const ProductForm = ({
 
       <div className="flex w-full gap-4">
         <Input
+          isRequired
           name="stock"
           label="Stock"
           value={values.stock?.toString()}
@@ -86,6 +88,7 @@ const ProductForm = ({
         />
 
         <Input
+          isRequired
           name="minStock"
           label="Stock Mínimo"
           value={values.minStock?.toString()}
@@ -98,6 +101,7 @@ const ProductForm = ({
       </div>
 
       <Select
+        isRequired
         name="category"
         items={categories}
         value={values.category as string}
@@ -117,6 +121,7 @@ const ProductForm = ({
 
       <div className="flex justify-between items-center">
         <input
+          required
           type="file"
           name="image"
           accept="image/*"

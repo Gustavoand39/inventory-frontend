@@ -14,8 +14,8 @@ export const login = async (
   return data;
 };
 
-export const refreshToken = async (token: string): Promise<IAuthResponse> => {
-  const { data } = await api.post<IAuthResponse>("auth/refresh", { token });
+export const refreshToken = async (): Promise<IAuthResponse> => {
+  const { data } = await api.post<IAuthResponse>("auth/refresh");
 
   if (data.error) {
     toast.error(data.message);
