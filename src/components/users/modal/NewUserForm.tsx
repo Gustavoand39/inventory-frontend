@@ -10,6 +10,7 @@ const NewUserForm: React.FC<IUserProps> = ({ values, handleInputChange }) => {
   return (
     <>
       <Input
+        isRequired
         autoFocus
         name="name"
         label="Nombre"
@@ -31,6 +32,7 @@ const NewUserForm: React.FC<IUserProps> = ({ values, handleInputChange }) => {
       />
 
       <Input
+        isRequired
         name="user_name"
         label="Nombre de usuario"
         value={values.user_name}
@@ -41,6 +43,8 @@ const NewUserForm: React.FC<IUserProps> = ({ values, handleInputChange }) => {
       />
 
       <Input
+        isRequired
+        type="email"
         name="email"
         label="Correo electrónico"
         value={values.email}
@@ -51,6 +55,7 @@ const NewUserForm: React.FC<IUserProps> = ({ values, handleInputChange }) => {
       />
 
       <Input
+        isRequired
         type="password"
         name="password"
         label="Contraseña"

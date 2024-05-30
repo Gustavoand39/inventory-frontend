@@ -9,6 +9,7 @@ const CategoryForm = ({ values, handleInputChange }: ICategoryProps) => {
   return (
     <>
       <Input
+        isRequired
         autoFocus
         name="name"
         label="Nombre"

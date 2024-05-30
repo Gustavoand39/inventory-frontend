@@ -83,11 +83,11 @@ const ListCategories = () => {
   const openCreateModal = () => setIsCreateOpen(true);
 
   const handleCreate = async () => {
-    setIsCreateOpen(false);
     const success = await createCategory(values as ICategory);
     if (success) {
       closeCreateModal();
       fetchCategories();
+      setIsCreateOpen(false);
     }
   };
 
@@ -104,11 +104,11 @@ const ListCategories = () => {
   };
 
   const handleEdit = async () => {
-    setIsEditOpen(false);
     const success = await updateCategory(values as ICategory);
     if (success) {
       fetchCategories();
       reset(initialCategoryState);
+      setIsEditOpen(false);
     }
   };
 

@@ -82,11 +82,11 @@ const ListUsers = () => {
   const openCreateModal = () => setIsCreateOpen(true);
 
   const handleCreate = async () => {
-    setIsCreateOpen(false);
     const success = await createUser(values as INewUser);
     if (success) {
       closeCreateModal();
       fetchUsers();
+      setIsCreateOpen(false);
     }
   };
 
@@ -104,11 +104,11 @@ const ListUsers = () => {
   };
 
   const handleEdit = async () => {
-    setIsEditOpen(false);
     const success = await updateUser(values as IUser);
     if (success) {
       fetchUsers();
       reset(initialUserState);
+      setIsEditOpen(false);
     }
   };
 
