@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
 
   return (
     <header
-      className={`z-50 flex justify-between items-center md:justify-end bg-white dark:bg-neutral-800 shadow-sm px-4 py-3`}
+      className={`z-50 flex justify-between items-center md:justify-end bg-white dark:bg-neutral-800 shadow-sm px-4 md:px-12 py-3`}
     >
       <div onClick={handleMenu} className="md:hidden cursor-pointer">
         {isMenuOpen ? <CloseMenu height={32} /> : <Menu height={32} />}
