@@ -9,7 +9,7 @@ const Layout: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen relative">
       <Sidebar isMenuOpen={isMenuOpen} />
 
       <div className="flex flex-col flex-1">

@@ -13,10 +13,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isMenuOpen }) => {
   return (
     <nav
       ref={refNav}
-      className={`group w-24 h-screen bg-gray-700 text-white absolute z-50 md:relative md:inline-block md:w-24 md:hover:w-48 
-      transition-all duration-500 ease-in-out py-6 ${
-        isMenuOpen ? "absolute w-48" : "hidden"
-      }`}
+      className={`group h-screen bg-gray-700 text-white fixed top-0 left-0 z-50 md:relative md:inline-block md:w-24 md:hover:w-48
+      transition-all duration-300 ease-in-out py-6 dark:bg-neutral-900 ${
+        isMenuOpen ? "w-48" : "hidden"
+      } md:flex md:flex-col`}
       aria-label="Menú principal"
     >
       <NavLink
@@ -41,10 +41,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isMenuOpen }) => {
             }
           >
             <li className="w-full flex justify-start gap-4 py-3">
-              <span className="transition-transform duration-300 ease-in-out">
+              <span className="md:group-hover:scale-110 transition-transform duration-300 ease-in-out">
                 {item.iconChild}
               </span>
-              <span className="flex md:hidden md:group-hover:flex md:transition-all md:duration-200 ease-in-out">
+              <span className="flex md:hidden group-hover:flex">
                 {item.title}
               </span>
             </li>

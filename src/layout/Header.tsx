@@ -7,7 +7,7 @@ import {
   Avatar,
 } from "@nextui-org/react";
 import {
-  ArrowLeftEndOnRectangleIcon as Logout,
+  ArrowLeftOnRectangleIcon as Logout,
   UserIcon as User,
   Bars3Icon as Menu,
   XMarkIcon as CloseMenu,
@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
 
   return (
     <header
-      className={`z-50 flex justify-between items-center md:justify-end bg-white dark:bg-neutral-800 shadow-sm px-12 py-3`}
+      className={`z-50 flex justify-between items-center md:justify-end bg-white dark:bg-neutral-800 shadow-sm px-4 py-3`}
     >
       <div onClick={handleMenu} className="md:hidden cursor-pointer">
         {isMenuOpen ? <CloseMenu height={32} /> : <Menu height={32} />}
@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
         <Brand />
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex gap-4 items-center">
         <ThemeSelector />
 
         <Dropdown placement="bottom-end">
@@ -58,7 +58,6 @@ const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
             <DropdownItem
               isReadOnly
               key="profile"
-              className=""
               textValue="Profile"
               aria-label="Perfil"
             >
