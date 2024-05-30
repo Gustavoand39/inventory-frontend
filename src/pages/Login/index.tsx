@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Input, Button, Checkbox } from "@nextui-org/react";
-import { NavLink } from "react-router-dom";
+// import { NavLink } from "react-router-dom";
 import { toast } from "sonner";
 import {
   UserIcon as User,
@@ -124,13 +124,13 @@ const Login: React.FC = (): JSX.Element => {
             Iniciar sesión
           </Button>
 
-          <NavLink
+          {/* <NavLink
             to="/"
             className="text-end text-sm text-gray-500 dark:text-gray-300 hover:text-blue-600 transition-all mt-1"
             aria-label="¿Olvidaste tu contraseña?"
           >
             ¿Olvidaste tu contraseña?
-          </NavLink>
+          </NavLink> */}
         </form>
       </div>
     </div>
