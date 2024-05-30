@@ -5,7 +5,9 @@ type FormValues = { [key: string]: unknown };
 const useForm = <T extends FormValues>(initialState: T) => {
   const [values, setValues] = useState<T>(initialState);
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = event.target;
 
     setValues((prevValues) => ({

@@ -3,7 +3,14 @@ import { useRoutes } from "react-router-dom";
 import { Spinner } from "@nextui-org/react";
 
 const Layout = React.lazy(() => import("../layout/Layout"));
-const Inventory = React.lazy(() => import("../pages/Inventory"));
+const Dashboard = React.lazy(() => import("../pages/Dashboard"));
+const Products = React.lazy(() => import("../pages/Products"));
+const Categories = React.lazy(() => import("../pages/Categories"));
+const Users = React.lazy(() => import("../pages/Users"));
+const Inventory = React.lazy(() => import("../pages/InventoryLog"));
+const InventoryLogDetails = React.lazy(
+  () => import("../pages/InventoryLog/InventoryLogDetails/InventoryLogDetails")
+);
 
 interface IRoute {
   path?: string;
@@ -24,10 +31,24 @@ const SecureRoutes: React.FC<IRoute> = () => {
       path: "/",
       element: <Layout />,
       children: [
-        { path: "/", element: <LoadComponent component={Inventory} /> },
+        { path: "/", element: <LoadComponent component={Dashboard} /> },
+        { path: "inicio", element: <LoadComponent component={Dashboard} /> },
         {
-          path: "inventario",
+          path: "productos",
+          element: <LoadComponent component={Products} />,
+        },
+        {
+          path: "categorias",
+          element: <LoadComponent component={Categories} />,
+        },
+        { path: "usuarios", element: <LoadComponent component={Users} /> },
+        {
+          path: "inventario_log",
           element: <LoadComponent component={Inventory} />,
+        },
+        {
+          path: "inventario_log/:id",
+          element: <LoadComponent component={InventoryLogDetails} />,
         },
       ],
     },

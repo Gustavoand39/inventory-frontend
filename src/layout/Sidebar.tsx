@@ -1,50 +1,54 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { ComputerDesktopIcon as AcmeLogo } from "@heroicons/react/24/solid";
 import menuItems from "../helpers/menuItems";
-import Brand from "../components/layout/Brand";
+import { useRef } from "react";
 
-import { HomeIcon, InboxStackIcon, UsersIcon } from "@heroicons/react/24/solid";
-
-interface IMenuIcon {
-  [key: string]: JSX.Element;
+interface SidebarProps {
+  isMenuOpen: boolean;
 }
 
-const Sidebar = () => {
-  const [isActive, setIsActive] = useState(menuItems[0].key);
-
-  const handleActive = (key: string): void => setIsActive(key);
-
-  const menuIcons: IMenuIcon = {
-    home: <HomeIcon height={24} />,
-    inventory: <InboxStackIcon height={24} />,
-    users: <UsersIcon height={24} />,
-  };
+const Sidebar: React.FC<SidebarProps> = ({ isMenuOpen }) => {
+  const refNav = useRef<HTMLDivElement>(null);
 
   return (
     <nav
-      className="h-screen hidden md:flex bg-gray-700 dark:bg-neutral-900 text-white flex-col items-start w-56"
+      ref={refNav}
+      className={`group h-screen bg-gray-700 text-white fixed top-0 left-0 z-50 md:relative md:inline-block md:w-24 md:hover:w-48
+      transition-all duration-300 ease-in-out py-6 dark:bg-neutral-900 ${
+        isMenuOpen ? "w-48" : "hidden"
+      } md:flex md:flex-col`}
       aria-label="Menú principal"
     >
-      <div
-        className="w-full hidden md:flex items-center justify-center cursor-pointer py-4 my-4"
-        onClick={() => handleActive(menuItems[0].key)}
+      <NavLink
+        to="/"
+        className="w-full text-lg flex justify-center opacity-0 md:opacity-100 gap-2 py-4"
       >
-        <Brand />
-      </div>
+        <AcmeLogo height={28} width={28} />
+        <p className="font-bold text-inherit hidden md:group-hover:flex">
+          ACME
+        </p>
+      </NavLink>
 
-      <ul className="w-full my-4">
+      <ul className="w-full flex flex-col gap-2 my-4">
         {menuItems.map((item) => (
-          <Link key={item.key} to={item.url}>
-            <li
-              className={`w-100 flex gap-3 text-lg px-8 py-3 hover:bg-gray-800 cursor-pointer ${
-                isActive === item.key ? "font-bold text-cyan-300" : ""
-              }`}
-              onClick={() => handleActive(item.key)}
-            >
-              {menuIcons[item.key]}
-              {item.title}
+          <NavLink
+            key={item.key}
+            to={item.url}
+            className={({ isActive }) =>
+              `w-full flex justify-start gap-4 px-8 py-2 hover:bg-gray-800 focus:outline-none cursor-pointer ${
+                isActive ? "font-bold text-teal-300" : ""
+              }`
+            }
+          >
+            <li className="w-full flex justify-start gap-4 py-3">
+              <span className="md:group-hover:scale-110 transition-transform duration-300 ease-in-out">
+                {item.iconChild}
+              </span>
+              <span className="flex md:hidden group-hover:flex">
+                {item.title}
+              </span>
             </li>
-          </Link>
+          </NavLink>
         ))}
       </ul>
     </nav>

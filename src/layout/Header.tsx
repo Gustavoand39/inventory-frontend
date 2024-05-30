@@ -1,39 +1,36 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext } from "react";
 import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Button,
   Avatar,
 } from "@nextui-org/react";
 import {
-  ArrowLeftEndOnRectangleIcon as Logout,
+  ArrowLeftOnRectangleIcon as Logout,
   UserIcon as User,
-  MoonIcon as Moon,
-  SunIcon as Sun,
   Bars3Icon as Menu,
   XMarkIcon as CloseMenu,
 } from "@heroicons/react/24/solid";
-
 import { AuthContext } from "../context/AuthContext";
 import Brand from "../components/layout/Brand";
-import useTheme from "../hooks/useTheme";
+import ThemeSelector from "../components/layout/ThemeSelector";
 
-type ThemeIconProps = {
-  isDarkMode: boolean;
-};
+interface HeaderProps {
+  isMenuOpen: boolean;
+  setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
-const Header: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+const Header: React.FC<HeaderProps> = ({ isMenuOpen, setIsMenuOpen }) => {
   const { auth, logout } = useContext(AuthContext);
-  const { isDarkMode, toggleTheme } = useTheme();
 
-  const handleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const handleMenu = useCallback(() => {
+    setIsMenuOpen((prevState) => !prevState);
+  }, [setIsMenuOpen]);
 
   return (
     <header
-      className={`z-50 flex justify-between items-center md:justify-end bg-white dark:bg-neutral-800 shadow-sm px-12 py-3`}
+      className={`z-50 flex justify-between items-center md:justify-end bg-white dark:bg-neutral-800 shadow-sm px-4 py-3`}
     >
       <div onClick={handleMenu} className="md:hidden cursor-pointer">
         {isMenuOpen ? <CloseMenu height={32} /> : <Menu height={32} />}
@@ -43,18 +40,11 @@ const Header: React.FC = () => {
         <Brand />
       </div>
 
-      <div className="flex gap-4">
-        <Button
-          isIconOnly
-          variant="light"
-          onClick={toggleTheme}
-          aria-label="Cambiar tema"
-        >
-          <ThemeIcon isDarkMode={isDarkMode} />
-        </Button>
+      <div className="flex gap-4 items-center">
+        <ThemeSelector />
 
         <Dropdown placement="bottom-end">
-          <DropdownTrigger className="cursor-pointer">
+          <DropdownTrigger className="hidden md:flex cursor-pointer">
             <Avatar
               icon={<User height={24} />}
               classNames={{
@@ -68,7 +58,6 @@ const Header: React.FC = () => {
             <DropdownItem
               isReadOnly
               key="profile"
-              className=""
               textValue="Profile"
               aria-label="Perfil"
             >
@@ -88,14 +77,6 @@ const Header: React.FC = () => {
         </Dropdown>
       </div>
     </header>
-  );
-};
-
-const ThemeIcon: React.FC<ThemeIconProps> = ({ isDarkMode }) => {
-  return isDarkMode ? (
-    <Moon height={24} width={24} />
-  ) : (
-    <Sun height={24} width={24} />
   );
 };
 
